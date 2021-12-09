@@ -1,0 +1,47 @@
+{
+	"front_center_camera_calibration" : 
+	{
+		"device_type" : "camera",
+		"param" : 
+		{
+			"blinding_area_param" : 
+			{
+				"blinding_area_distance" : 4.587542018708203,
+				"blinding_area_pixel_height" : 561
+			},
+			"h_matrix" : 
+			{
+				"cols" : 3,
+				"continuous" : true,
+				"data" : 
+				[
+					[
+						1.7628044684134475e-09,
+						-6.5624233133706496e-09,
+						-2.4247701856754431
+					],
+					[
+						0.0021853912977704325,
+						0.0002884094240374126,
+						-2.0970071079432624
+					],
+					[
+						0.00024034084598055264,
+						-0.0018211598797279861,
+						1
+					]
+				],
+				"rows" : 3,
+				"type" : 6
+			},
+			"vanishing_point" : 
+			{
+				"vanishing_pt_x" : 871.90566740230554,
+				"vanishing_pt_y" : 664.16711549727756
+			}
+		},
+		"param_type" : "calibration",
+		"sensor_name" : "front_center_camera",
+		"target_sensor_name" : "front_center_camera"
+	}
+}

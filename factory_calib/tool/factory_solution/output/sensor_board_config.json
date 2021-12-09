@@ -1,0 +1,30 @@
+{
+    "camera0-board0": {
+        "board": {
+            "grid_size": 0.2,
+            "height": 0.9,
+            "name": "board0",
+            "posx": 5.0,
+            "posy": 1.0,
+            "posz": 1.0,
+            "type": "camera",
+            "width": 2.1,
+            "yaw": 180.0
+        },
+        "sensor": {
+            "horizonal_fov": 120.0,
+            "img_height": 1080,
+            "img_width": 1920,
+            "name": "camera0",
+            "pitch": 0.0,
+            "posx": 1.0,
+            "posy": 0.0,
+            "posz": 1.0,
+            "roll": 0.0,
+            "type": "camera",
+            "vertical_fov": 60.0,
+            "yaw": 0.0
+        }
+    },
+    "mode": "Fix Boards"
+}

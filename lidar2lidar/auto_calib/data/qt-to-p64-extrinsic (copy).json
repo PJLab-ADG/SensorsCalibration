@@ -1,0 +1,43 @@
+{
+    "left_lidar-to-top_center_lidar-extrinsic": {
+        "param_type": "extrinsic",
+        "sensor_name": "qt",
+        "target_sensor_name": "p64",
+        "device_type": "relational",
+        "param": {
+            "sensor_calib": {
+                "data": [
+                    [
+                        0.515115,
+                        0.617795,
+                        0.61233,
+                        2.44072
+                    ],
+                    [
+                        -0.73264,
+                        0.690821,
+                        -0.0803995,
+                        -0.127297
+                    ],
+                    [
+                        -0.466674,
+                        -0.403948,
+                        0.800547,
+                        -1.20641
+                    ],
+                    [
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                ],
+                "continuous": true,
+                "rows": 4,
+                "type": 6,
+                "cols": 4
+            },
+            "time_lag": 0
+        }
+    }
+}
