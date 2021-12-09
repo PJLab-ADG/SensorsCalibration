@@ -1,0 +1,11 @@
+lib/
+bin/
+build/
+cmake-build-debug/
+cmake-build-release/
+.idea
+.vscode
+__pycache__/
+*.py[cod]
+*$py.class
+
