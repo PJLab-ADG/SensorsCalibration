@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(ManualCalib)
+project(RadarToLidar)
 set(CMAKE_CXX_FLAGS "-std=c++11 -g -Wall")
 
 find_package(Pangolin REQUIRED)
@@ -25,8 +25,8 @@ file(GLOB_RECURSE PARSER_PATH src/*.cpp)
 add_library(${PROJECT_NAME} STATIC ${PARSER_PATH})
 target_link_libraries(${PROJECT_NAME} libjsoncpp.a ${OpenCV_LIBS} ${Boost_SYSTEM_LIBRARY})
 
-add_executable(radar2lidar src/radar2lidar.cpp)
-target_link_libraries(radar2lidar ${PROJECT_NAME})
-target_link_libraries(radar2lidar ${PCL_LIBRARIES})
-target_link_libraries(radar2lidar ${Pangolin_LIBRARIES})
+add_executable(run_radar2lidar src/run_radar2lidar.cpp)
+target_link_libraries(run_radar2lidar ${PROJECT_NAME})
+target_link_libraries(run_radar2lidar ${PCL_LIBRARIES})
+target_link_libraries(run_radar2lidar ${Pangolin_LIBRARIES})
 

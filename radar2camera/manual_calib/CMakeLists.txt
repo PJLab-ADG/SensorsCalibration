@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(ManualCalib)
+project(RadarToCamera)
 set(CMAKE_CXX_FLAGS "-std=c++11 -g -Wall")
 
 find_package(Pangolin REQUIRED)

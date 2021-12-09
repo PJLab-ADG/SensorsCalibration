@@ -342,9 +342,9 @@ void ProcessSingleFrame(const pcl::PointCloud<pcl::PointXYZI>::Ptr cloudLidar,
 
 int main(int argc, char **argv) {
   if (argc != 5 && argc != 4) {
-    cout << "Usage: ./radar2lidar pcd_path radar_file_path extrinsic_json "
+    cout << "Usage: ./run_radar2lidar <pcd_path> <radar_file_path> <extrinsic_json> "
               "\nexample:\n\t"
-              "./bin/radar2lidar data/radar2lidar/lidar.pcd data/radar2lidar/front_radar.csv data/radar2lidar/front_radar-to-top_center_lidar-extrinsic.json"
+              "./bin/run_radar2lidar data/lidar.pcd data/front_radar.csv data/front_radar-to-top_center_lidar-extrinsic.json"
             << endl;
     return 0;
   }
