@@ -1,4 +1,4 @@
-## Introduction
+# Introduction
 
 This automatic and user-friendly calibration tool is for calibrating the extrinsic parameter of LiDAR and camera in road scenes. Line  features  from  static  straight-line-shaped  objects  such  as  road lanes, lights, and telegraphy poles are extracted for both image and LiDAR point cloud, later on, calibration will be achieved by aligning those two kind of features. 
 
@@ -8,7 +8,7 @@ This automatic and user-friendly calibration tool is for calibrating the extrins
 
 <img src="./data/mask.jpg" width="100%" height="100%" alt="Line Feature for Image" div align=center /><br>
 
-## Prerequisites
+# Prerequisites
 
 **C++ libraries for main calibration project **
 
@@ -24,7 +24,7 @@ This automatic and user-friendly calibration tool is for calibrating the extrins
 * tensorflow 1.15 (with CUDA 10.0 cudnn 7.6) `pip3 install tensorflow-gpu=1.15`
 * [pydensecrf](https://github.com/lucasb-eyer/pydensecrf)  `pip3 install git+https://github.com/lucasb-eyer/pydensecrf.git`
 
-## Usage
+# Usage
 
 1. Five Input files: 
 
