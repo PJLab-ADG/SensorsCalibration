@@ -4,8 +4,9 @@ This is a project for intrinsic calibration and evalution.
 
 It mainly includes two part: intrinsic calibration, distortion measurement. 
 
-## Dependecies
+## Prerequisites
 
+- Cmake
 - opencv 2.4
 - eigen 3
 
@@ -23,7 +24,7 @@ cmake .. && make
 - <calibration_image_dir>: contains only seleted chessboard calibration image
 - <distortion_image_path>: distortion harp image
  
-## How to run
+## Run
 run command:
 ```shell
 # run intrinsic calibration
