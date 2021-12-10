@@ -48,9 +48,12 @@ def extract_lane_mask(img, semantic_mask):
 
 
 if __name__ == "__main__":
-
-    inputfile = ''
-    outputfile = ''
+    if len(sys.argv) != 3:
+        print('Usage: ./main img_path mask_path')
+        exit(0)
+    else:
+        inputfile = sys.argv[1]
+        outputfile = sys.argv[2]
     use_car = False
     try:
         opts, args = getopt.getopt(sys.argv[1:],"hi:o:v:",["ifile=","ofile=","use_car="])

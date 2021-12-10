@@ -1,4 +1,5 @@
 import os 
+import sys
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
 from io import BytesIO
 import tarfile
@@ -139,7 +140,7 @@ LABEL_NAMES = np.asarray([
 FULL_LABEL_MAP = np.arange(len(LABEL_NAMES)).reshape(len(LABEL_NAMES), 1)
 FULL_COLOR_MAP = label_to_color_image(FULL_LABEL_MAP)
 
-MODEL = DeepLabModel("../python/deeplabv3_cityscapes_train_2018_02_06.tar.gz") 
+MODEL = DeepLabModel("../deeplabv3_cityscapes_train_2018_02_06.tar.gz") 
 
 def run_model(image_name):
   original_im = Image.open(image_name) 
@@ -150,4 +151,7 @@ def run_model(image_name):
   return (seg_map,seg_map_result)
 
 if __name__ == "__main__":
-  run_model("intro.png")
+  if len(sys.argv) != 2:
+        print('Usage: ./main img_path')
+  else:
+    run_model(sys.argv[1])
