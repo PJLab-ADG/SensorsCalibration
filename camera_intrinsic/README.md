@@ -26,7 +26,17 @@ cmake .. && make
 
 ## Calibration targets
 
-<img src="./images/board.png" width="50%" height="50%" alt="checkerboard" div align=center /><br>
+Camera intrinsic calibration board, size 900 * 1000 mm, each grid size 100 * 100 mm
+
+<img src="./images/board2.jpg" width="20%" height="20%" alt="checkerboard" div align=center /><br>
+
+Camera intrinsic calibration board, size 900 * 1000 mm, each grid size 50 * 50 mm
+
+<img src="./images/board1.jpg" width="20%" height="20%" alt="checkerboard" div align=center /><br>
+
+Camera distortion measurement board, size 900 * 1000 mm
+
+<img src="./images/board3.jpg" width="20%" height="20%" alt="distortion" div align=center /><br>
  
 ## Run
 run command:
