@@ -26,7 +26,7 @@ cmake .. && make
 
 ## Calibration targets
 
-<img src="./images/board1.png" width="100%" height="100%" alt="cehckerboard" div align=center /><br>
+<img src="./images/board1.jpg" width="100%" height="100%" alt="cehckerboard" div align=center /><br>
  
 ## Run
 run command:
