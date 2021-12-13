@@ -23,6 +23,10 @@ cmake .. && make
 ## Input data
 - <calibration_image_dir>: contains only seleted chessboard calibration image
 - <distortion_image_path>: distortion harp image
+
+## Calibration targets
+
+<img src="./images/board.png" width="50%" height="50%" alt="checkerboard" div align=center /><br>
  
 ## Run
 run command:
