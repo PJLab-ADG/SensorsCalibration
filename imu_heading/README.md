@@ -2,7 +2,7 @@
 
 This is a project for imu heading angle calibration and evalution.
 
-<img src="./images/imu_heading.png" width="20%" height="20%" alt="checkerboard" div align=center /><br>
+<img src="./images/imu_heading.png" width="50%" height="50%" alt="checkerboard" div align=center /><br>
 
 ## Prerequisites
 
