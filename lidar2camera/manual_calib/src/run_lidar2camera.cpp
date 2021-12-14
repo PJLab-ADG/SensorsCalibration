@@ -199,10 +199,13 @@ bool ManualCalibration(int key_input) {
 
 int main(int argc, char **argv) {
   if (argc != 5) {
-    cout << "Usage: ./run_lidar2camera <image_path> <pcd_path> <intrinsic_json> "
-                "\nexample:\n\t"
-                "./bin/run_lidar2camera data/0.png data/0.pcd data/center_camera-intrinsic.json data/top_center_lidar-to-center_camera-extrinsic.json"
-             << endl;
+    cout << "Usage: ./run_lidar2camera <image_path> <pcd_path> "
+            "<intrinsic_json> <extrinsic_json>"
+            "\nexample:\n\t"
+            "./bin/run_lidar2camera data/0.png data/0.pcd "
+            "data/center_camera-intrinsic.json "
+            "data/top_center_lidar-to-center_camera-extrinsic.json"
+         << endl;
     return 0;
   }
 

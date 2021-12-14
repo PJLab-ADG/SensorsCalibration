@@ -1,6 +1,8 @@
 /*
- * Copyright (C) 2020 by SenseTime Group Limited. All rights reserved.
- * Liu Zhuochun <liuzhuochun@sensetime.com>
+ * Copyright (C) 2021 by Autonomous Driving Group, Shanghai AI Laboratory
+ * Limited. All rights reserved.
+ * Yan Guohang <yanguohang@pjlab.org.cn>
+ * Liu Zhuochun <liuzhuochun@pjlab.org.cn>
  */
 #include "utils/Ransac_fitline.h"
 

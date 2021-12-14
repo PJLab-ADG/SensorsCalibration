@@ -1,7 +1,8 @@
 /*
- * Copyright (C) 2020 by SenseTime Group Limited. All rights reserved.
- * Yan Guohang <yanguohang@sensetime.com>
- * Liu Zhuochun <liuzhuochun@sensetime.com>
+ * Copyright (C) 2021 by Autonomous Driving Group, Shanghai AI Laboratory
+ * Limited. All rights reserved.
+ * Yan Guohang <yanguohang@pjlab.org.cn>
+ * Liu Zhuochun <liuzhuochun@pjlab.org.cn>
  */
 
 #include <dirent.h>
@@ -17,7 +18,7 @@ const char usage[] = "\t./bin/run_imu_heading method_id <data_dir>\n"
 
 int main(int argc, char **argv) {
   if (argc < 3) {
-    std::cout << argv[0] << usage;
+    std::cout << usage;
     return 1;
   }
   int method_id = std::stod(argv[1]);

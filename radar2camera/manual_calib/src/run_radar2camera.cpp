@@ -290,10 +290,14 @@ bool ReadRadarPoint(const std::string &radar_csv_path,
 
 int main(int argc, char **argv) {
   if (argc != 6 && argc != 7) {
-    cout << "Usage: ./run_radar2camera <image_path> <radar_file_path> <intrinsic_json> "
-              "\nexample:\n\t"
-              "./bin/run_radar2camera data/0.jpg data/front_radar.csv data/center_camera-intrinsic.json data/center_camera-homography.json data/radar-to-center_camera-extrinsic.json"
-            << endl;
+    cout << "Usage: ./run_radar2camera <image_path> <radar_file_path> "
+            "<intrinsic_json> <homo_json> <extrinsic_json>"
+            "\nexample:\n\t"
+            "./bin/run_radar2camera data/0.jpg data/front_radar.csv "
+            "data/center_camera-intrinsic.json "
+            "data/center_camera-homography.json "
+            "data/radar-to-center_camera-extrinsic.json"
+         << endl;
     return 0;
   }
 

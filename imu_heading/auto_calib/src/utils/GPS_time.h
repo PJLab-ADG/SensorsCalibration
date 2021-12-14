@@ -1,6 +1,8 @@
 /*
- * Copyright (C) 2019 by SenseTime Group Limited. All rights reserved.
- * Li WenQiang <liwenqiang1@sensetime.com>
+ * Copyright (C) 2021 by Autonomous Driving Group, Shanghai AI Laboratory
+ * Limited. All rights reserved.
+ * Yan Guohang <yanguohang@pjlab.org.cn>
+ * Liu Zhuochun <liuzhuochun@pjlab.org.cn>
  */
 
 #pragma once

@@ -36,7 +36,7 @@ int main(int argc, char **argv) {
     if (argc < 3 ) {
         cout << "Usage: ./pcd_view_stitcher pcd_folder lidar_pose_file "
                 "\nexample:\n\t"
-                "./bin/pcd_view_stitcher data/lidar2imu/top_center_lidar data/lidar2imu/top_center_lidar-pose.txt"
+                "./bin/pcd_view_stitcher data/top_center_lidar data/top_center_lidar-pose.txt"
              << endl;
         return 0;
     }

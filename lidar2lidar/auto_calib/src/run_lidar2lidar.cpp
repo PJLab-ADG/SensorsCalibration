@@ -99,6 +99,8 @@ int main(int argc, char **argv) {
   curr_transform = curr_transform * json_param;
   pcl::transformPointCloud(*source_cloud_copy, *source_cloud_copy,
                            curr_transform);
+  pcl::io::savePCDFile<pcl::PointXYZ>("source_cloud_trans.pcd",
+                                      *source_cloud_copy);
   LOGI("calibration complete!");
   std::cout << "the calibration result is " << std::endl;
   std::cout << curr_transform << std::endl;

@@ -50,19 +50,3 @@ run command:
 - **Intrinsic Calibration:** Program will automatically run intrinsic calibration. Corner-detect result will be displayed. All input calibration images will be undistorted and save to `<calibration_image_dir>/undistort/` dir.
 
 - **Distortion Evaluation:** Sampled points of original and undistorted images will be displayed. Undistorted distortion_image will be save to `<output_dir>`.
-
-## Citation
-This distortion evaluation code is based on the research below:
-```
-@article{tang2012high,
-  title={High-precision camera distortion measurements with a “calibration harp”},
-  author={Tang, Zhongwei and von Gioi, Rafael Grompone and Monasse, Pascal and Morel, Jean-Michel},
-  journal={JOSA A},
-  volume={29},
-  number={10},
-  pages={2134--2143},
-  year={2012},
-  publisher={Optical Society of America}
-}
-   
-```

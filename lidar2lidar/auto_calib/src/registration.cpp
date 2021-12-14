@@ -243,7 +243,7 @@ void Registrator::PointCloudDownSampling(
     pcl::PointCloud<pcl::PointXYZ>::Ptr &out_cloud) {
   pcl::VoxelGrid<pcl::PointXYZ> sor;
   sor.setInputCloud(in_cloud);
-  sor.setLeafSize(0.05f, 0.05f, 0.05f);
+  sor.setLeafSize(0.1f, 0.1f, 0.1f);
   sor.filter(*out_cloud);
 }
 
