@@ -49,7 +49,7 @@ cmake .. && make
 
 3. Calibration panel:
 
-   <img src="./images/lidar2imu_panel.png" width="50%" height="50%" alt="lidar2imu_panel" div align=center /><br>
+   <img src="./images/lidar2imu_panel.png" width="100%" height="100%" alt="lidar2imu_panel" div align=center /><br>
 
    The calibration window consists of the left control panel for manual calibration and the right point cloud interface. Users can check whether the point cloud sequence is aligned by clicking the corresponding button in the panel or using Keyboard as input to adjust the extrinsic parameter. When the point cloud sequence is aligned, the calibration ends, click the save button to save the result.   
 
@@ -98,18 +98,10 @@ According to the figure below for data collection, the calibration vehicle recor
 3. The calibrated vehicle circulates three times according to the trajectory shown in the figure below, and the vehicle speed is maintained at 10km/h.
 4. Try not to have dynamic objects around, such as vehicles, etc.
 
-<img src="./images/lidar2imu.png" width="50%" height="50%" alt="data collection" div align=center /><br>
+<img src="./images/lidar2imu.png" width="100%" height="100%" alt="data collection" div align=center /><br>
 
 ## Usage
-
-1. Five Input files: 
-
-   `Usage: ./run_lidar2imu <lidar_pcds_dir> <poses_path> <extrinsic_json>`
-
-- **lidar_pcds_dir:** LiDAR PCD data from the LiDAR sensor
-- **lidar_pose_file:** Poses file from the IMU sensor
-- **extrinsic_json:** JSON file of initial values of extrinsic parameters between sensors
-
+50
 2. Run the test sample:
 
    The executable file is under the bin folder.
@@ -126,4 +118,4 @@ According to the figure below for data collection, the calibration vehicle recor
 
 3. Calibration result:
 
-    <img src="./images/result.png" width="50%" height="50%" alt="lidar2camera_panel" div align=center /><br>
+    <img src="./images/result.png" width="100%" height="100%" alt="lidar2camera_panel" div align=center /><br>

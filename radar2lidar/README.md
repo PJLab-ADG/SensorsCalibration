@@ -44,7 +44,7 @@ cmake .. && make
 
 3. Calibration panel:
 
-   <img src="./images/radar2lidar_panel.png" width="50%" height="50%" alt="lidar2imu_panel" div align=center /><br>
+   <img src="./images/radar2lidar_panel.png" width="100%" height="100%" alt="lidar2imu_panel" div align=center /><br>
 
    The calibration window consists of the left control panel for manual calibration and the right point cloud interface. Users can check whether the Radar point cloud and LiDAR point cloud are aligned by clicking the corresponding button in the panel or using Keyboard as input to adjust the extrinsic parameter. When the Radar point cloud and LiDAR point cloud are aligned, the calibration ends, click the save button to save the result.  
 

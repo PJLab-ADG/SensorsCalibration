@@ -45,7 +45,7 @@ cmake .. && make
 
 3. Calibration panel:
 
-   <img src="./images/lidar2camera_panel.png" width="50%" height="50%" alt="lidar2camera_panel" div align=center /><br>
+   <img src="./images/lidar2camera_panel.png" width="100%" height="100%" alt="lidar2camera_panel" div align=center /><br>
 
    The calibration window consists of the left control panel for manual calibration and the right point cloud projection image. Users can check whether the points cloud and the image are aligned by clicking the corresponding button in the panel or using Keyboard as input to adjust the extrinsic parameter. When the points cloud and the image are aligned, the calibration ends, click the save button to save the result.  
 
@@ -103,7 +103,7 @@ cmake .. && make
 This automatic and user-friendly calibration tool is for calibrating the extrinsic parameter of LiDAR and camera in road scenes. Line features from static straight-line-shaped objects such as road lanes, lights, and telegraphy poles are extracted for both image and LiDAR point cloud, later on, calibration will be achieved by aligning those two kind of features.
 
 **Note:** To get line features for image like Figure below, please refer to [README.md](auto_calib/tool/README.md) to extract image features.
-<img src="./images/mask.jpg" width="50%" height="50%" alt="mask" div align=center /><br>
+<img src="./images/mask.jpg" width="100%" height="100%" alt="mask" div align=center /><br>
 
 ## Usage
 
@@ -129,7 +129,7 @@ This automatic and user-friendly calibration tool is for calibrating the extrins
 
 3. Calibration result:
 
-   <img src="./images/result.png" width="50%" height="50%" alt="calibration result" div align=center /><br>
+   <img src="./images/result.png" width="100%" height="100%" alt="calibration result" div align=center /><br>
 
 ## Citation
 This distortion evaluation code is based on the research below:

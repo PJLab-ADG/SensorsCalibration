@@ -44,13 +44,13 @@ cmake .. && make
    ./bin/run_radar2camera data/0.jpg data/front_radar.csv data/center_camera-intrinsic.json data/center_camera-homography.json data/radar-to-center_camera-extrinsic.json
    ```
    In the figure below, select two lane lines as follows to form a set of parallel lines
-   <img src="./images/radar2camera_pick_points.png" width="50%" height="50%" alt="lidar2imu_panel" div align=center /><br>
+   <img src="./images/radar2camera_pick_points.png" width="100%" height="100%" alt="lidar2imu_panel" div align=center /><br>
    Turn the lane line of the image to the bird's-eye view through the homography matrix, as shown in the right part of the calibration panel below. At the end of calibration, ensure that the Radar points along the road are parallel to the lane line.
 
    <br>
 3. Calibration panel:
 
-   <img src="./images/radar2camera_panel.png" width="50%" height="50%" alt="lidar2imu_panel" div align=center /><br>
+   <img src="./images/radar2camera_panel.png" width="100%" height="100%" alt="lidar2imu_panel" div align=center /><br>
 
    The calibration window consists of the left control panel for manual calibration and the right point cloud projection image. Users can check whether the points cloud and the image are aligned by clicking the corresponding button in the panel or using Keyboard as input to adjust the extrinsic parameter. When the points cloud and the image are aligned, the calibration ends, click the save button to save the result.  
 

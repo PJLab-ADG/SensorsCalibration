@@ -23,7 +23,7 @@ cmake .. && make
 
 According to the figure below for data collection, the calibration vehicle records IMU and GPS data in a straight line.
 
-<img src="./images/data_collect.png" width="50%" height="50%" alt="data collection" div align=center /><br>
+<img src="./images/data_collect.png" width="100%" height="100%" alt="data collection" div align=center /><br>
 
 ## Run
 run command:
