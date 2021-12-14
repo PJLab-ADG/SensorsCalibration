@@ -9,7 +9,7 @@ Sensor calibration is the foundation block of any autonomous system and its cons
 ### Sensors calibration
 This calibration toolbox provides some calibration tools based on road scenes. The specific contents are as follows. If you want to use one of the calibration tools in the list below, you can click the use link to enter the instruction page. 
 
-| calibration param |calibration type| calibration method | mannual calibration | auto calibration | usage |
+| calibration param |calibration type| calibration method | mannual calibration | auto calibration | usage documentation |
 | :--------------: |:--------------:| :------------: | :--------------: | :------------: | :------------: |
 | camera intrinsice| intrinsic |  target-based  |             |  &#10004;  |[camera intrinsic](camera_intrinsic/README.md)|
 | imu heading      | extrinsic |  target-less   |             |  &#10004;  |[imu heaidng](imu_heading/README.md)|
@@ -23,16 +23,17 @@ This calibration toolbox provides some calibration tools based on road scenes. T
 ### Factory calibration
 At the same time, the calibration toolbox also provides some factory calibration tools. 
 
-| calibration board type  | calibration sensor | calibration board pattern | remove opencv | auto calibration | usage |
+| calibration board type  | calibration sensor | calibration board pattern | remove opencv | auto calibration | usage documentation |
 | :--------------: |:--------------:| :------------: | :--------------: | :------------: | :------------: |
-| chessboard   | camera |    |       &#10004;      |  &#10004;       |[factory calib](factory_calib/README.md)|
-| circle board      | camera |     |       &#10004;     |  &#10004;  |[factory calib](factory_calib/README.md)|
-| vertical board        | camera |     |   &#10004;  |  &#10004;     |[factory calib](factory_calib/README.md)| 
-| aruco marker board     | camera |    |   &#10004;  |  &#10004;     |[factory calib](factory_calib/README.md)|
-| apriltag board      | camera |     |   &#10004;  |  &#10004;       |[factory calib](factory_calib/README.md)|
-| round hole board      | camera and lidar |  |   &#10004;  |      &#10004;      |[factory calib](factory_calib/README.md)|
+| chessboard        | camera            | [chessboard ](./factory_calib/images/chessboard.jpg)     |       &#10004;      |  &#10004;       |[factory calib](factory_calib/README.md)|
+| circle board      | camera            | [circle_board ](./factory_calib/images/circle_board.jpg) |   &#10004;     |  &#10004;  |[factory calib](factory_calib/README.md)|
+| vertical board    | camera            | [vertical board ](./factory_calib/images/vertical_board.jpg) |   &#10004;  |  &#10004;     |[factory calib](factory_calib/README.md)| 
+| apriltag board    | camera            | [apriltag board ](./factory_calib/images/april_board.jpg) |   &#10004;  |  &#10004;       |[factory calib](factory_calib/README.md)|
+| aruco marker board| camera            | [aruco marker board ](./factory_calib/images/aruco_marker_board.jpg) |   &#10004;  |  &#10004;     |[factory calib](factory_calib/README.md)|
+| round hole board  | camera and lidar  | [round hole board ](./factory_calib/images/round_hole_board.jpg) |   &#10004;  |      &#10004;      |[factory calib](factory_calib/README.md)|
+ 
 
-## Related paper
+## Related paper 
 Related paper available on arxiv:  
 [OpenCalib: A calibration toolbox for different application scenarios](http://arxiv.org)
 
