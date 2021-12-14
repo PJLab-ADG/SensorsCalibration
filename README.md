@@ -25,12 +25,12 @@ At the same time, the calibration toolbox also provides some factory calibration
 
 | calibration board type  | calibration sensor | calibration board pattern | remove opencv | auto calibration | usage documentation |
 | :--------------: |:--------------:| :------------: | :--------------: | :------------: | :------------: |
-| chessboard        | camera            | [chessboard ](./factory_calib/pattern/chessboard.pdf)     |       &#10004;      |  &#10004;       |[factory calib](factory_calib/README.md)|
-| circle board      | camera            | [circle_board ](./factory_calib/pattern/circle_board.pdf) |   &#10004;     |  &#10004;  |[factory calib](factory_calib/README.md)|
-| vertical board    | camera            | [vertical board ](./factory_calib/pattern/vertical_board.pdf) |   &#10004;  |  &#10004;     |[factory calib](factory_calib/README.md)| 
-| apriltag board    | camera            | [apriltag board ](./factory_calib/pattern/april_board.pdf) |   &#10004;  |  &#10004;       |[factory calib](factory_calib/README.md)|
-| aruco marker board| camera            | [aruco marker board ](./factory_calib/pattern/aruco_marker_board.pdf) |   &#10004;  |  &#10004;     |[factory calib](factory_calib/README.md)|
-| round hole board  | camera and LiDAR  | [round hole board ](./factory_calib/pattern/round_hole_board.pdf) |   &#10004;  |      &#10004;      |[factory calib](factory_calib/README.md)|
+| chessboard        | Camera            | [chessboard ](./factory_calib/pattern/chessboard.pdf)     |       &#10004;      |  &#10004;       |[factory calib](factory_calib/README.md)|
+| circle board      | Camera            | [circle_board ](./factory_calib/pattern/circle_board.pdf) |   &#10004;     |  &#10004;  |[factory calib](factory_calib/README.md)|
+| vertical board    | Camera            | [vertical board ](./factory_calib/pattern/vertical_board.pdf) |   &#10004;  |  &#10004;     |[factory calib](factory_calib/README.md)| 
+| apriltag board    | Camera            | [apriltag board ](./factory_calib/pattern/april_board.pdf) |   &#10004;  |  &#10004;       |[factory calib](factory_calib/README.md)|
+| aruco marker board| Camera            | [aruco marker board ](./factory_calib/pattern/aruco_marker_board.pdf) |   &#10004;  |  &#10004;     |[factory calib](factory_calib/README.md)|
+| round hole board  | Camera and LiDAR  | [round hole board ](./factory_calib/pattern/round_hole_board.pdf) |   &#10004;  |      &#10004;      |[factory calib](factory_calib/README.md)|
  
 
 ## Related paper 
