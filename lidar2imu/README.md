@@ -98,7 +98,7 @@ According to the figure below for data collection, the calibration vehicle recor
 3. The calibrated vehicle circulates three times according to the trajectory shown in the figure below, and the vehicle speed is maintained at 10km/h.
 4. Try not to have dynamic objects around, such as vehicles, etc.
 
-<img src="./images/lidar2imu.png" width="20%" height="20%" alt="checkerboard" div align=center /><br>
+<img src="./images/lidar2imu.png" width="50%" height="50%" alt="data collection" div align=center /><br>
 
 ## Usage
 
