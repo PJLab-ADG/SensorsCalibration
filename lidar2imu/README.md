@@ -101,7 +101,7 @@ According to the figure below for data collection, the calibration vehicle recor
 <img src="./images/lidar2imu.png" width="100%" height="100%" alt="data collection" div align=center /><br>
 
 ## Usage
-50
+
 2. Run the test sample:
 
    The executable file is under the bin folder.

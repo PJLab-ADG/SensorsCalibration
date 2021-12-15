@@ -28,29 +28,39 @@ cmake .. && make
 
 Camera intrinsic calibration board, size 900 * 1000 mm, each grid size 100 * 100 mm
 
-<img src="./images/board2.jpg" width="50%" height="50%" alt="checkerboard" div align=center /><br>
+<img src="./images/board2.jpg" width="30%" height="30%" alt="checkerboard" div align=center /><br>
 
 Camera intrinsic calibration board, size 900 * 1000 mm, each grid size 50 * 50 mm
 
-<img src="./images/board1.jpg" width="50%" height="50%" alt="checkerboard" div align=center /><br>
+<img src="./images/board1.jpg" width="30%" height="30%" alt="checkerboard" div align=center /><br>
 
 Camera distortion measurement board, size 900 * 1000 mm
 
-<img src="./images/board3.jpg" width="50%" height="50%" alt="distortion" div align=center /><br>
+<img src="./images/board3.jpg" width="30%" height="30%" alt="distortion" div align=center /><br>
  
-## Run
-run command:
-```shell
-# run intrinsic calibration
-./bin/run_intrinsic_calibration <calibration_image_dir>
-# run distortion measurement
-./bin/run_distortion_measure <distortion_image_path>
-```
+## Usage
+1. run command:
+  ```shell
+  # run intrinsic calibration
+  ./bin/run_intrinsic_calibration <calibration_image_dir>
+  # run distortion measurement
+  ./bin/run_distortion_measure <distortion_image_path>
+  ```
 
-- **Intrinsic Calibration:** Program will automatically run intrinsic calibration. Corner-detect result will be displayed. All input calibration images will be undistorted and save to `<calibration_image_dir>/undistort/` dir.
+  - **Intrinsic Calibration:** Program will automatically run intrinsic calibration. Corner-detect result will be displayed. All input calibration images will be undistorted and save to `<calibration_image_dir>/undistort/` dir.
 
-- **Distortion Evaluation:** Sampled points of original and undistorted images will be displayed. Undistorted distortion_image will be save to `<output_dir>`.
+  - **Distortion Evaluation:** Sampled points of original and undistorted images will be displayed. Undistorted distortion_image will be save to `<output_dir>`.
 
+2. Run the test sample:
+  ```shell
+  # run intrinsic calibration
+  cd ./intrinsic_calib/
+  ./bin/run_intrinsic_calibration ./data/
+  
+  # run distortion measurement
+  cd ./calib_verification/
+  ./bin/run_distortion_measure data/test.png
+  ```
 ## Citation
 This distortion evaluation code is based on the research below:
 ```
