@@ -13,12 +13,12 @@
 					[
 						1100,
 						0,
-						970
+						644
 					],
 					[
 						0,
 						1100,
-						541
+						367
 					],
 					[
 						0,
@@ -45,8 +45,8 @@
 				"rows" : 1,
 				"type" : 6
 			},
-			"img_dist_h" : 1080,
-			"img_dist_w" : 1920
+			"img_dist_h" : 720,
+			"img_dist_w" : 1280
 		},
 		"param_type" : "intrinsic",
 		"sensor_name" : "front_center_camera",

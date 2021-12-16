@@ -98,8 +98,8 @@ struct CircleBoard {
   }
 };
 
-struct ApriltagBoard {
-  ApriltagBoard() {
+struct ArucoMarker {
+  ArucoMarker() {
     id_box.emplace_back(
         std::vector<bool>{0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0});
     id_box.emplace_back(

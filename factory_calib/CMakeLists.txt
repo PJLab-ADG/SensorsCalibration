@@ -22,7 +22,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 file(GLOB_RECURSE UTILS src/utils/*.cpp)
 add_library(utils STATIC ${UTILS})
 
-file(GLOB_RECURSE PARSER_PATH src/*.cpp)
+file(GLOB_RECURSE PARSER_PATH src/*.cpp src/*.cc)
 add_library(${PROJECT_NAME} STATIC ${PARSER_PATH})
 target_link_libraries(${PROJECT_NAME} ceres libjsoncpp.a ${OpenCV_LIBS})
 
@@ -30,3 +30,13 @@ add_executable(run_board_detect src/run_board_detect.cpp)
 target_link_libraries(run_board_detect ${PROJECT_NAME})
 target_link_libraries(run_board_detect utils)
 target_link_libraries(run_board_detect ceres)
+
+add_executable(run_homo_vp_calib src/run_homo_vp_calib.cpp)
+target_link_libraries(run_homo_vp_calib ${PROJECT_NAME})
+target_link_libraries(run_homo_vp_calib utils)
+target_link_libraries(run_homo_vp_calib ceres)
+
+add_executable(run_extrinsic_calib src/run_extrinsic_calib.cpp)
+target_link_libraries(run_extrinsic_calib ${PROJECT_NAME})
+target_link_libraries(run_extrinsic_calib utils)
+target_link_libraries(run_extrinsic_calib ceres)
