@@ -1,7 +1,9 @@
 /*
- * Copyright (C) 2019 by SenseTime Group Limited. All rights reserved.
- * Yan Guohang <yanguohang@sensetime.com>
+ * Copyright (C) 2021 by Autonomous Driving Group, Shanghai AI Laboratory
+ * Limited. All rights reserved.
+ * Yan Guohang <yanguohang@pjlab.org.cn>
  */
+
 #include <Eigen/Core>
 #include <boost/filesystem.hpp>
 #include <pangolin/pangolin.h>

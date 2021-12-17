@@ -53,7 +53,7 @@
 **/
 
 #pragma once
-
+#include<apriltags/TagFamily.h>
 namespace AprilTags {
 
 const unsigned long long t36h11[] =

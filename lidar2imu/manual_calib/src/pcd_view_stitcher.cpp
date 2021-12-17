@@ -1,3 +1,9 @@
+/*
+ * Copyright (C) 2021 by Autonomous Driving Group, Shanghai AI Laboratory
+ * Limited. All rights reserved.
+ * Yan Guohang <yanguohang@pjlab.org.cn>
+ */
+
 #include <unistd.h>
 #include <Eigen/Core>
 #include <pcl/io/pcd_io.h>

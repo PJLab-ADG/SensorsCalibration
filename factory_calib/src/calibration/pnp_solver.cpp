@@ -257,7 +257,7 @@ bool solvePnPbyIterative(const Eigen::Matrix3d &K,
         return false;
     }
     int count = pts3d.size();
-    std::cout<<"begin solve"<<std::endl;
+    // std::cout<<"begin solve"<<std::endl;
     // convert image and world point to homogenous coordinate
     Eigen::MatrixXd m = covertPointsHomogenous(pts2d);
     Eigen::MatrixXd M = covertPointsHomogenous(pts3d);
@@ -384,7 +384,7 @@ struct YCostFunctorPnP
 		residual[0] = point_out[0] - T(object_point_[0]);
 		residual[1] = point_out[1] - T(object_point_[1]);
         residual[2] = point_out[2] - T(object_point_[2]);
-        std::cout<<"residual: "<<residual[0]<<','<<residual[1]<<','<<residual[2]<<std::endl;
+        // std::cout<<"residual: "<<residual[0]<<','<<residual[1]<<','<<residual[2]<<std::endl;
 
 		return true;
 	}
@@ -442,7 +442,7 @@ struct XCostFunctorPnP
 
 		residual[0] = u - u_img;
 		residual[1] = v - v_img;
-        std::cout<<"residual: "<<residual[0]<<','<<residual[1]<<std::endl;
+        // std::cout<<"residual: "<<residual[0]<<','<<residual[1]<<std::endl;
 
 		return true;
 	}
@@ -536,7 +536,7 @@ struct ZCostFunctorPnP
 
 		residual[0] = u - u_img;
 		residual[1] = v - v_img;
-        std::cout<<"residual: "<<residual[0]<<','<<residual[1]<<std::endl;
+        // std::cout<<"residual: "<<residual[0]<<','<<residual[1]<<std::endl;
 
 		return true;
 	}
@@ -551,7 +551,6 @@ struct ZCostFunctorPnP
 
 bool solvePnPbyInitialParams(std::vector< std::vector<float> >& objpoints,  std::vector< std::vector<float> >& imgpoints, 
 	 std::vector< std::vector<double> >& camera_intrinsic,  std::vector<double>& dist_coeffs, std::vector<float>& rvec, std::vector<float>& tvec){
-    std::cout<<"solve cam pnp begin\n";
 	double rot[3];
 	double tra[3];
 	rot[0] = rvec[0];
@@ -564,11 +563,9 @@ bool solvePnPbyInitialParams(std::vector< std::vector<float> >& objpoints,  std:
 	ceres::Problem problem;
 	for (int i = 0; i < imgpoints.size(); i++)
 	{
-        std::cout<<i<<std::endl;
 		ceres::CostFunction* cost = XCostFunctorPnP::create(objpoints[i], imgpoints[i], camera_intrinsic, dist_coeffs, tra);
 		problem.AddResidualBlock(cost, nullptr, rot, tra);
 	}
-    std::cout<<"add res finish\n";
 
 	ceres::Solver::Options options;
 	options.linear_solver_type = ceres::DENSE_SCHUR;
@@ -590,7 +587,6 @@ bool solvePnPbyInitialParams(std::vector< std::vector<float> >& objpoints,  std:
 
 bool solveCamPnP(std::vector< std::vector<float> >& objpoints,  std::vector< std::vector<float> >& imgpoints, 
 	 std::vector< std::vector<double> >& camera_intrinsic,  std::vector<double>& dist_coeffs, std::vector<float>& rvec, std::vector<float>& tvec){
-    std::cout<<"solve cam pnp begin\n";
 	double rot[3];
 	double tra[3];
 	rot[0] = rvec[0];
@@ -603,11 +599,9 @@ bool solveCamPnP(std::vector< std::vector<float> >& objpoints,  std::vector< std
 	ceres::Problem problem;
 	for (int i = 0; i < imgpoints.size(); i++)
 	{
-        std::cout<<i<<std::endl;
 		ceres::CostFunction* cost = ZCostFunctorPnP::create(objpoints[i], imgpoints[i], camera_intrinsic, dist_coeffs, tra);
 		problem.AddResidualBlock(cost, nullptr, rot, tra);
 	}
-    std::cout<<"add res finish\n";
 
 	ceres::Solver::Options options;
 	options.linear_solver_type = ceres::DENSE_SCHUR;
@@ -629,7 +623,6 @@ bool solveCamPnP(std::vector< std::vector<float> >& objpoints,  std::vector< std
 
 bool solveLidarPnP(std::vector< std::vector<float> >& objpoints,  std::vector< std::vector<float> >& lidarpoints, 
 	  std::vector<float>& rvec, std::vector<float>& tvec){
-    std::cout<<"solve lidar pnp begin\n";
 	double rot[3];
 	double tra[3];
 	rot[0] = rvec[0];
@@ -642,11 +635,9 @@ bool solveLidarPnP(std::vector< std::vector<float> >& objpoints,  std::vector< s
 	ceres::Problem problem;
 	for (int i = 0; i < lidarpoints.size(); i++)
 	{
-        std::cout<<i<<std::endl;
 		ceres::CostFunction* cost = YCostFunctorPnP::create(objpoints[i], lidarpoints[i],tra);
 		problem.AddResidualBlock(cost, nullptr, rot, tra);
 	}
-    std::cout<<"add res finish\n";
 
 	ceres::Solver::Options options;
 	options.linear_solver_type = ceres::DENSE_SCHUR;

@@ -133,7 +133,7 @@ int main(int argc, char **argv) {
     if (display_img && sta) {
       std::vector<cv::Scalar> color_box;
       color_box.emplace_back(cv::Scalar(235, 80, 80));
-      color_box.emplace_back(cv::Scalar(205, 200, 0));
+      color_box.emplace_back(cv::Scalar(205, 200, 0)); // 5: round hole board
       color_box.emplace_back(cv::Scalar(80, 235, 80));
       color_box.emplace_back(cv::Scalar(0, 200, 200));
       color_box.emplace_back(cv::Scalar(80, 80, 235));
