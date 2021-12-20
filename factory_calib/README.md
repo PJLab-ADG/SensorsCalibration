@@ -22,48 +22,48 @@ cmake .. && make
 **chessboard:**
 
 <left class="half">
-<img src="./images/chessboard.jpg" width="40%" height="40%"> &nbsp&nbsp&nbsp&nbsp<img src="./images/chessboard_detection.png" width="40%" height="40%">
+<img src="./images/chessboard.jpg" width="40%" height="40%">&nbsp<img src="./images/chessboard_detection.png" width="40%" height="40%">
 </left>
 
 **circle board:**
 
 <left class="half">
-<img src="./images/circle_board.jpg" width="40%" height="40%"> &nbsp&nbsp&nbsp&nbsp<img src="./images/circleboard_detection.png" width="40%" height="40%">
+<img src="./images/circle_board.jpg" width="40%" height="40%">&nbsp<img src="./images/circleboard_detection.png" width="40%" height="40%">
 </left>
 
 **vertical board:**
 
 <left class="half">
-<img src="./images/vertical_board.jpg" width="40%" height="40%"> &nbsp&nbsp&nbsp&nbsp<img src="./images/verticalboard_detection.png" width="40%" height="40%">
+<img src="./images/vertical_board.jpg" width="40%" height="40%">&nbsp<img src="./images/verticalboard_detection.png" width="40%" height="40%">
 </left>
 
 **apriltag board:**
 
 <left class="half">
-<img src="./images/april_board.jpg" width="40%" height="40%"> &nbsp&nbsp&nbsp&nbsp<img src="./images/apriltags_detection.png" width="40%" height="40%">
+<img src="./images/april_board.jpg" width="40%" height="40%">&nbsp<img src="./images/apriltags_detection.png" width="40%" height="40%">
 </left>
 
 **aruco marker board:**
 
 <left class="half">
-<img src="./images/arucomarker.jpg" width="40%" height="40%"> &nbsp&nbsp&nbsp&nbsp<img src="./images/arucomarker_detection.png" width="40%" height="40%">
+<img src="./images/arucomarker.jpg" width="40%" height="40%">&nbsp<img src="./images/arucomarker_detection.png" width="40%" height="40%">
 </left>
 
 **round hole board:**
 
 <left class="half">
-<img src="./images/round_hole.png" width="40%" height="40%"> &nbsp&nbsp&nbsp&nbsp<img src="./images/round_hole_detection.png" width="40%" height="40%">
+<img src="./images/round_hole.png" width="40%" height="40%">&nbsp<img src="./images/round_hole_detection.png" width="40%" height="40%">
 </left>
 
 ## Run
 run command:
 ```shell
-# run intrinsic calibration
+# run board detection
 ./bin/run_board_detect image board_type
-# run distortion measurement
+# run round hole board detection
 ./bin/run_lidar_detect pcds
-# run distortion measurement
+# run extrinsic calibration example
 ./bin/run_extrinsic_calib
-# run distortion measurement
+# run camera homography matrix and vanishing point calibration example
 ./bin/run_homo_vp_calib image board_type output_dir
 ```
