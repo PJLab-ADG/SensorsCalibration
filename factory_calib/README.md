@@ -21,7 +21,7 @@ cmake .. && make
 ## Calibration board recognition
 
 | calibration board type  | original image | recognition result | 
-| :--------------: |:------------------------------------------------------------------:|:------------------------------------------------------------------:| 
+| :--------------: | :------------------------------------------------------------------: | :------------------------------------------------------------------: | 
 | chessboard        | <img src="./images/chessboard.jpg" width="100%" height="100%" div align=center> | <img src="./images/chessboard_detection.png" width="100%" height="100%" div align=center>|    
 | circle board      | <img src="./images/circle_board.jpg" width="100%" height="100%" div align=center>  | <img src="./images/circleboard_detection.png" width="100%" height="100%" div align=center>|  
 | vertical board    | <img src="./images/vertical_board.jpg" width="100%" height="100%" div align=center>| <img src="./images/verticalboard_detection.png" width="100%" height="100%" div align=center>|  
