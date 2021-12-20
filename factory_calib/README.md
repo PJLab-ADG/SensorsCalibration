@@ -43,6 +43,8 @@ cmake .. && make
 <img src="./images/april_board.jpg" width="40%" height="40%">&nbsp<img src="./images/apriltags_detection.png" width="40%" height="40%">
 </left>
 
+**Note:** Apriltag recognition code is derived from the open-source project [kalibr](https://github.com/ethz-asl/kalibr/tree/master/aslam_offline_calibration/ethz_apriltag2).
+
 **aruco marker board:**
 
 <left class="half">
