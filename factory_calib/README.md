@@ -7,6 +7,7 @@ This is a project for factory calibration. Factory calibration is usually the la
 - Cmake
 - opencv 2.4
 - eigen 3
+- PCL 1.9
 
 ## Compile
 
