@@ -21,7 +21,7 @@ cmake .. && make
 
 | calibration board type  | original image | recognition result | 
 | :--------------: |:-----------------------------------------------------------:|:-----------------------------------------------------------:| 
-| chessboard        | <img src="./images/chessboard.jpg" width="40%" height="40%">| <img src="./images/chessboard_detection.png" width="40%" height="40%">|    
+| chessboard        | <img src="./images/chessboard.jpg" width="100%" height="100%">| <img src="./images/chessboard_detection.png" width="100%" height="100%">|    
 | circle board      | <img src="./images/chessboard.jpg" width="40%" height="40%">| <img src="./images/chessboard_detection.png" width="40%" height="40%">|  
 | vertical board    | <img src="./images/chessboard.jpg" width="40%" height="40%">| <img src="./images/chessboard_detection.png" width="40%" height="40%">|  
 | apriltag board    | <img src="./images/chessboard.jpg" width="40%" height="40%">| <img src="./images/chessboard_detection.png" width="40%" height="40%">|   
