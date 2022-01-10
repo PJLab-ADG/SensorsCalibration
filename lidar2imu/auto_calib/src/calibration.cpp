@@ -77,6 +77,7 @@ Eigen::Matrix4d Calibrator::GetDeltaTrans(double R[3], double t[3]) {
 void Calibrator::Calibration(const std::string lidar_path,
                              const std::string odom_path,
                              const Eigen::Matrix4d init_Tl2i) {
+  lidar_path_ = lidar_path;
   auto time_begin = std::chrono::steady_clock::now();
   int turn = 35;
   int window = 10;
@@ -160,8 +161,8 @@ void Calibrator::Calibration(const std::string lidar_path,
         }
       }
     }
-    //
-    displayVoxelMap(surf_map);
+    // display
+    // displayVoxelMap(surf_map);
     // optimize delta R, t1, t2
     if (i < turn / 2) {
       optimizeDeltaTrans(surf_map, corn_map, 4, deltaRPY, deltaT);
@@ -190,9 +191,16 @@ void Calibrator::Calibration(const std::string lidar_path,
   bestVal[3] = deltaT[0];
   bestVal[4] = deltaT[1];
   bestVal[5] = deltaT[2];
+  auto time_end = std::chrono::steady_clock::now();
+  std::cout << "calib cost "
+            << std::chrono::duration<double>(time_end - time_begin).count()
+            << "s" << std::endl;
   // save refined calib
   std::string refine_calib_file = "./refined_calib_imu_to_lidar.txt";
-  Eigen::Matrix4d deltaTrans = GetDeltaTrans(deltaRPY, deltaT);
+  Eigen::Matrix4d deltaTrans = Eigen::Matrix4d::Identity();
+  // SaveStitching(deltaTrans,"before.pcd");
+  deltaTrans = GetDeltaTrans(deltaRPY, deltaT);
+  // SaveStitching(deltaTrans,"after.pcd");
   std::cout << "delta T is:" << std::endl;
   std::cout << deltaTrans << std::endl;
   auto refined_Tl2i = init_Tl2i * deltaTrans;
@@ -224,8 +232,44 @@ void Calibrator::Calibration(const std::string lidar_path,
          << bestVal[3] + last_deltaT[3] << " " << bestVal[4] + last_deltaT[4]
          << " " << bestVal[5] + last_deltaT[5] << std::endl;
   std::cout << "save refined calib to " << refine_calib_file << std::endl;
-  auto time_end = std::chrono::steady_clock::now();
-  std::cout << "calib cost "
-            << std::chrono::duration<double>(time_end - time_begin).count()
-            << "s" << std::endl;
+}
+
+void Calibrator::SaveStitching(const Eigen::Matrix4d transform,
+                               const std::string pcd_name) {
+
+  pcl::PointCloud<pcl::PointXYZI>::Ptr all_cloud(
+      new pcl::PointCloud<pcl::PointXYZI>());
+  pcl::octree::OctreePointCloudSearch<pcl::PointXYZI>::Ptr all_octree(
+      new pcl::octree::OctreePointCloudSearch<pcl::PointXYZI>(0.1));
+
+  all_octree->setInputCloud(all_cloud);
+  pcl::PointCloud<pcl::PointXYZI>::Ptr cloud(
+      new pcl::PointCloud<pcl::PointXYZI>);
+  for (size_t i = 0; i < lidar_files_.size(); i++) {
+    std::string lidar_file_name = lidar_path_ + lidar_files_[i] + ".pcd";
+    if (pcl::io::loadPCDFile(lidar_file_name, *cloud) < 0) {
+      LOGW("can not open %s", lidar_file_name);
+      return;
+    }
+    Eigen::Matrix4d T = lidar_poses_[i] * transform;
+    for (const auto &src_pt : cloud->points) {
+      if (!pcl_isfinite(src_pt.x) || !pcl_isfinite(src_pt.y) ||
+          !pcl_isfinite(src_pt.z))
+        continue;
+      Eigen::Vector3d p(src_pt.x, src_pt.y, src_pt.z);
+      Eigen::Vector3d p_res;
+      p_res = T.block<3, 3>(0, 0) * p + T.block<3, 1>(0, 3);
+      pcl::PointXYZI dst_pt;
+      dst_pt.x = p_res(0);
+      dst_pt.y = p_res(1);
+      dst_pt.z = p_res(2);
+      dst_pt.intensity = src_pt.intensity;
+      if (!all_octree->isVoxelOccupiedAtPoint(dst_pt)) {
+        all_octree->addPointToCloud(dst_pt, all_cloud);
+      }
+    }
+  }
+  pcl::io::savePCDFileASCII(pcd_name, *all_cloud);
+  all_cloud->clear();
+  all_octree->deleteTree();
 }
