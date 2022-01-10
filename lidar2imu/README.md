@@ -108,7 +108,7 @@ According to the figure below for data collection, the calibration vehicle recor
 
    ```
    cd ~./auto_calib/
-   ./bin/run_lidar2imu data/top_center_lidar data/top_center_lidar-pose.txt data/gnss-to-top_center_lidar-extrinsic.json
+   ./bin/run_lidar2imu data/top_center_lidar/ data/NovAtel-pose-lidar-time.txt data/gnss-to-top_center_lidar-extrinsic.json
    ```
    **Note:** Because the data is relatively large, only part of the data is uploaded, the complete data can be downloaded from the link below.
    ```
@@ -119,3 +119,13 @@ According to the figure below for data collection, the calibration vehicle recor
 3. Calibration result:
 
     <img src="./images/result.png" width="100%" height="100%" alt="lidar2camera_panel" div align=center /><br>
+   
+   comparison before and after calibration:
+   <img src="./images/before_calib.png" width="100%" height="100%" alt="lidar2camera_panel" div align=center /><br>
+   <img src="./images/after_calib.png" width="100%" height="100%" alt="lidar2camera_panel" div align=center /><br>
+
+   point cloud feature map:
+   <img src="./images/feature1.png" width="100%" height="100%" alt="lidar2camera_panel" div align=center /><br>
+   <img src="./images/feature2.png" width="100%" height="100%" alt="lidar2camera_panel" div align=center /><br>
+   <img src="./images/feature3.png" width="100%" height="100%" alt="lidar2camera_panel" div align=center /><br>
+
