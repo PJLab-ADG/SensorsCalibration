@@ -121,11 +121,13 @@ According to the figure below for data collection, the calibration vehicle recor
     <img src="./images/result.png" width="100%" height="100%" alt="lidar2camera_panel" div align=center /><br>
    
    comparison before and after calibration:
+   before calibration<br>
    <img src="./images/before_calib.png" width="100%" height="100%" alt="lidar2camera_panel" div align=center /><br>
+   before calibration<br>
    <img src="./images/after_calib.png" width="100%" height="100%" alt="lidar2camera_panel" div align=center /><br>
 
-   point cloud feature map:
-   <img src="./images/feature1.png" width="100%" height="100%" alt="lidar2camera_panel" div align=center /><br>
-   <img src="./images/feature2.png" width="100%" height="100%" alt="lidar2camera_panel" div align=center /><br>
-   <img src="./images/feature3.png" width="100%" height="100%" alt="lidar2camera_panel" div align=center /><br>
+   point cloud feature map:<br>
+   <img src="./images/feature1.png" width="100%" height="100%" alt="lidar2camera_panel" div align=center /><br><br>
+   <img src="./images/feature2.png" width="100%" height="100%" alt="lidar2camera_panel" div align=center /><br><br>
+   <img src="./images/feature3.png" width="100%" height="100%" alt="lidar2camera_panel" div align=center /><br><br>
 
