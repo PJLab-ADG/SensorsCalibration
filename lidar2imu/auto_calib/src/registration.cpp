@@ -11,6 +11,7 @@
 #include <pcl/features/normal_3d.h>
 #include <pcl/filters/extract_indices.h>
 #include <pcl/kdtree/kdtree_flann.h>
+#include <pcl/octree/octree_search.h>
 #include <pcl/point_types.h>
 #include <pcl/registration/gicp.h>
 #include <pcl/registration/icp.h>
@@ -19,11 +20,9 @@
 #include <pcl/sample_consensus/method_types.h>
 #include <pcl/sample_consensus/model_types.h>
 #include <pcl/segmentation/sac_segmentation.h>
-#include <pcl/octree/octree_search.h>
 
-
-#include "omp.h"
 #include "logging.hpp"
+#include "omp.h"
 #include "transform_util.hpp"
 
 Registrator::Registrator() {
@@ -73,7 +72,8 @@ void Registrator::LoadLidarPCDs(const std::string &pcds_dir) {
   pcds_ng_cloud_.reserve(timestamp_.size());
   pcds_ng_cloud_.resize(timestamp_.size());
   pcds_.resize(timestamp_.size());
-  pcl::PointCloud<pcl::PointXYZI>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZI>);
+  pcl::PointCloud<pcl::PointXYZI>::Ptr cloud(
+      new pcl::PointCloud<pcl::PointXYZI>);
   pcl::PointCloud<pcl::PointXYZI>::Ptr filter_cloud(
       new pcl::PointCloud<pcl::PointXYZI>);
   pcl::PointCloud<pcl::PointXYZI>::Ptr g_cloud(
@@ -115,7 +115,7 @@ void Registrator::LoadLidarPCDs(const std::string &pcds_dir) {
   LOGI("the number of pcd is %d", pcds_g_cloud_.size());
 }
 
-void Registrator::SaveStitching(const std::string &stitching_path){
+void Registrator::SaveStitching(const std::string &stitching_path) {
   int interval = 10;
   Eigen::Matrix4d delta_pose = TransformUtil::GetDeltaT(curr_best_extrinsic_);
   for (size_t i = 0; i < pcds_.size(); i++) {
@@ -126,9 +126,9 @@ void Registrator::SaveStitching(const std::string &stitching_path){
     lidar_pose *= delta_pose;
 
     for (const auto &src_pt : pcds_[i].points) {
-       if (!pcl_isfinite(src_pt.x) || !pcl_isfinite(src_pt.y) ||
+      if (!pcl_isfinite(src_pt.x) || !pcl_isfinite(src_pt.y) ||
           !pcl_isfinite(src_pt.z))
-          continue;
+        continue;
       Eigen::Vector3d p(src_pt.x, src_pt.y, src_pt.z);
       Eigen::Vector3d p_res;
       p_res = lidar_pose.block<3, 3>(0, 0) * p + lidar_pose.block<3, 1>(0, 3);
@@ -137,7 +137,8 @@ void Registrator::SaveStitching(const std::string &stitching_path){
       dst_pt.y = p_res(1);
       dst_pt.z = p_res(2);
       dst_pt.intensity = src_pt.intensity;
-      if (dst_pt.intensity >= intensity_threshold_ && !all_octree_->isVoxelOccupiedAtPoint(dst_pt)) {
+      if (dst_pt.intensity >= intensity_threshold_ &&
+          !all_octree_->isVoxelOccupiedAtPoint(dst_pt)) {
         all_octree_->addPointToCloud(dst_pt, all_cloud_);
       }
     }
@@ -148,11 +149,10 @@ void Registrator::SaveStitching(const std::string &stitching_path){
 
   all_cloud_->clear();
   all_octree_->deleteTree();
-
 }
 
 bool Registrator::RegistrationByVoxelOccupancy(Eigen::Matrix4d &transform) {
-  // 
+  //
   const float rpy_resolution = 0.05;
   const float xyz_resolution = 0.01;
   float var[6] = {0}, bestVal[6] = {0};
@@ -162,7 +162,7 @@ bool Registrator::RegistrationByVoxelOccupancy(Eigen::Matrix4d &transform) {
     var[i] = curr_best_extrinsic_[i];
     bestVal[i] = curr_best_extrinsic_[i];
   }
-  
+
   size_t min_voxel_occupancy = ComputeVoxelOccupancy(var);
   int max_iteration = 60;
   // yaw
@@ -304,7 +304,8 @@ void Registrator::PointCloudDownSampling(
 
 void Registrator::PointCloudFilterByROI(
     const pcl::PointCloud<pcl::PointXYZI>::Ptr &in_cloud,
-    const PointCloudBbox &roi, pcl::PointCloud<pcl::PointXYZI>::Ptr &out_cloud) {
+    const PointCloudBbox &roi,
+    pcl::PointCloud<pcl::PointXYZI>::Ptr &out_cloud) {
   out_cloud->clear();
   for (const auto &src_pt : in_cloud->points) {
     if (src_pt.x > roi.min_x && src_pt.x < roi.max_x) {
@@ -380,12 +381,12 @@ size_t Registrator::ComputeVoxelOccupancy(float var[6]) {
     Eigen::Matrix4d lidar_pose = lidar_poses_[i];
     lidar_pose *= delta_pose;
 
-    #pragma omp parallel for
+#pragma omp parallel for
     for (const auto &src_pt : pcds_[i].points) {
       if (!pcl_isfinite(src_pt.x) || !pcl_isfinite(src_pt.y) ||
           !pcl_isfinite(src_pt.z))
-          continue;
-      
+        continue;
+
       Eigen::Vector3d p(src_pt.x, src_pt.y, src_pt.z);
       Eigen::Vector3d p_res;
       p_res = lidar_pose.block<3, 3>(0, 0) * p + lidar_pose.block<3, 1>(0, 3);
@@ -394,9 +395,10 @@ size_t Registrator::ComputeVoxelOccupancy(float var[6]) {
       dst_pt.y = p_res(1);
       dst_pt.z = p_res(2);
       dst_pt.intensity = src_pt.intensity;
-      if (dst_pt.intensity >= intensity_threshold_ && !all_octree_->isVoxelOccupiedAtPoint(dst_pt)) {
-        
-        #pragma omp critical
+      if (dst_pt.intensity >= intensity_threshold_ &&
+          !all_octree_->isVoxelOccupiedAtPoint(dst_pt)) {
+
+#pragma omp critical
         all_octree_->addPointToCloud(dst_pt, all_cloud_);
       }
     }
