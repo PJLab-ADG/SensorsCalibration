@@ -120,10 +120,10 @@ According to the figure below for data collection, the calibration vehicle recor
 
     <img src="./images/result.png" width="100%" height="100%" alt="lidar2camera_panel" div align=center /><br>
    
-   comparison before and after calibration:
-   before calibration<br>
+   comparison before and after calibration:<br>
+   before calibration
    <img src="./images/before_calib.png" width="100%" height="100%" alt="lidar2camera_panel" div align=center /><br>
-   before calibration<br>
+   after calibration<br>
    <img src="./images/after_calib.png" width="100%" height="100%" alt="lidar2camera_panel" div align=center /><br>
 
    point cloud feature map:<br>
