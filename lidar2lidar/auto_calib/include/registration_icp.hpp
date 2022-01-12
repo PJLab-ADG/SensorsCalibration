@@ -20,11 +20,8 @@ public:
   void RegistrationByICP(const Eigen::Matrix4d &init_guess,
                          double *refined_yaw);
   Eigen::Matrix4d GetFinalTransformation();
-  // bool YawAligh(const Eigen::Matrix4d init_guess, double* refined_yaw);
-  void CalculateICPError(const pcl::KdTreeFLANN<pcl::PointXYZ> &kdtree,
-                         const Eigen::Matrix4d &init_guess, double yaw,
-                         int half_num, double res, double *refined_yaw,
-                         double *error);
+  double CalculateICPError(const pcl::KdTreeFLANN<pcl::PointXYZ> &kdtree,
+                           const Eigen::Matrix4d &init_guess, float cur_yaw);
 
 private:
   pcl::PointCloud<pcl::PointXYZ>::Ptr tgt_gcloud_;

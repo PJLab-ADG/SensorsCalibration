@@ -1,0 +1,10 @@
+device_id: 0
+path: test_data/hesai/scene1/p64.pcd
+device_id: 1
+path: test_data/hesai/scene1/qt_201.pcd
+device_id: 2
+path: test_data/hesai/scene1/qt_202.pcd
+device_id: 3
+path: test_data/hesai/scene1/qt_203.pcd
+device_id: 4
+path: test_data/hesai/scene1/qt_204.pcd

@@ -105,11 +105,26 @@ void Calibrator::Calibrate() {
     Eigen::Matrix4d T_ms = TransformUtil::GetMatrix(t_ms, R_ms);
     double z_error = std::fabs(t_ms(2) - init_ext(2, 3));
     if (z_error > 0.5) {
-      LOGE("slave %d ground fitting failed, error: z-diff error is too big.\n",
-           slave_id);
-      continue;
+      // maybe the direction is diffetent
+      slave_gplane.normal = -slave_gplane.normal;
+      slave_gplane.intercept = -slave_gplane.intercept;
+      rot_axis2 = slave_gplane.normal.cross(master_gplane.normal);
+      rot_axis2.normalize();
+      alpha2 = std::acos(slave_gplane.normal.dot(master_gplane.normal));
+      R_ms = Eigen::AngleAxisd(alpha2, rot_axis2);
+      slave_intcpt_local = Eigen::Vector3d(
+          0, 0, -slave_gplane.intercept / slave_gplane.normal(2));
+      slave_intcpt_master = R_ms * slave_intcpt_local;
+      t_ms = Eigen::Vector3d(0, 0, t_mp(2) - slave_intcpt_master(2));
+      T_ms = TransformUtil::GetMatrix(t_ms, R_ms);
+      z_error = std::fabs(t_ms(2) - init_ext(2, 3));
+      if (z_error > 0.5) {
+        LOGE(
+            "slave %d ground fitting failed, error: z-diff error is too big.\n",
+            slave_id);
+        continue;
+      }
     }
-    std::cout << init_ext << std::endl;
 
     double roll = TransformUtil::GetRoll(T_ms);
     double pitch = TransformUtil::GetPitch(T_ms);
