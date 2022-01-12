@@ -2,107 +2,163 @@
  * Copyright (C) 2021 by Autonomous Driving Group, Shanghai AI Laboratory
  * Limited. All rights reserved.
  * Yan Guohang <yanguohang@pjlab.org.cn>
- * Ouyang Jinhua <ouyangjinhua@pjlab.org.cn>
  */
-#include <Eigen/Core>
-#include <pcl/common/transforms.h>
-#include <pcl/conversions.h>
-#include <pcl/io/pcd_io.h>
-#include <pcl/point_cloud.h>
 
-#include "extrinsic_param.hpp"
-#include "registration.hpp"
+#include <chrono> // NOLINT
 #include <iostream>
+#include <pcl/common/transforms.h>
+#include <thread> // NOLINT
+#include <time.h>
 
-#include "logging.hpp"
-#include "transform_util.hpp"
-using namespace std;
+#include "calibration.hpp"
 
-int main(int argc, char **argv) {
+unsigned char color_map[10][3] = {{255, 255, 255}, // "white"
+                                  {255, 0, 0},     // "red"
+                                  {0, 255, 0},     // "green"
+                                  {0, 0, 255},     // "blue"
+                                  {255, 255, 0},   // "yellow"
+                                  {255, 0, 255},   // "pink"
+                                  {50, 255, 255},  // "light-blue"
+                                  {135, 60, 0},    //
+                                  {150, 240, 80},  //
+                                  {80, 30, 180}};  //
+
+void LoadPointCloud(
+    const std::string &filename,
+    std::map<int32_t, pcl::PointCloud<pcl::PointXYZ>> &lidar_points) {
+  std::ifstream file(filename);
+  if (!file.is_open()) {
+    std::cout << "[ERROR] open file " << filename << " failed." << std::endl;
+    exit(1);
+  }
+  std::string line, tmpStr;
+  while (getline(file, line)) {
+    int32_t device_id;
+    std::string point_cloud_path;
+    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(
+        new pcl::PointCloud<pcl::PointXYZ>);
+
+    std::stringstream ss(line);
+    ss >> tmpStr >> device_id;
+    getline(file, line);
+    ss = std::stringstream(line);
+    ss >> tmpStr >> point_cloud_path;
+    if (pcl::io::loadPCDFile(point_cloud_path, *cloud) < 0) {
+      std::cout << "[ERROR] cannot open pcd_file: " << point_cloud_path << "\n";
+      exit(1);
+    }
+
+    // std::vector<senselidar::calibration::PointXYZ> point =
+    //     GetPointFromPclPointCloud(cloud);
+    lidar_points.insert(std::make_pair(device_id, *cloud));
+  }
+}
+
+void LoadCalibFile(const std::string &filename,
+                   std::map<int32_t, InitialExtrinsic> &calib_extrinsic) {
+  std::ifstream file(filename);
+  if (!file.is_open()) {
+    std::cout << "open file " << filename << " failed." << std::endl;
+    exit(1);
+  }
+  float degree_2_radian = 0.017453293;
+  std::string line, tmpStr;
+  while (getline(file, line)) {
+    int32_t device_id;
+    InitialExtrinsic extrinsic;
+    std::stringstream ss(line);
+    ss >> tmpStr >> device_id;
+    getline(file, line);
+    ss = std::stringstream(line);
+    ss >> tmpStr >> extrinsic.euler_angles[0] >> extrinsic.euler_angles[1] >>
+        extrinsic.euler_angles[2] >> extrinsic.t_matrix[0] >>
+        extrinsic.t_matrix[1] >> extrinsic.t_matrix[2];
+
+    extrinsic.euler_angles[0] = extrinsic.euler_angles[0] * degree_2_radian;
+    extrinsic.euler_angles[1] = extrinsic.euler_angles[1] * degree_2_radian;
+    extrinsic.euler_angles[2] = extrinsic.euler_angles[2] * degree_2_radian;
+    calib_extrinsic.insert(std::make_pair(device_id, extrinsic));
+  }
+}
+
+int main(int argc, char *argv[]) {
   if (argc != 4) {
-    cout << "Usage: ./run_lidar2lidar <target_pcd_path> <source_pcd_path> "
-            "<extrinsic_json> "
-            "\nexample:\n\t"
-            "./bin/run_lidar2lidar data/p64.pcd data/qt.pcd  "
-            "data/qt-to-p64-extrinsic.json"
-         << endl;
+    std::cout
+        << "Usage: ./run_lidar2lidar <lidar_file> <calib_file> <output_dir>"
+           "\nexample:\n\t"
+           "./bin/run_lidar2lidar test_data/hesai/scene1/lidar_cloud_path.txt "
+           "test_data/hesai/scene1/initial_extrinsic.txt outputs"
+        << std::endl;
     return 0;
   }
-  string target_lidar_path = argv[1];
-  string source_lidar_path = argv[2];
-  string extrinsic_json = argv[3];
-  // load target lidar points
-  pcl::PointCloud<pcl::PointXYZ>::Ptr target_cloud(
-      new pcl::PointCloud<pcl::PointXYZ>);
+  auto lidar_file = argv[1];
+  auto calib_file = argv[2];
+  auto output_dir = argv[3];
+  std::map<int32_t, pcl::PointCloud<pcl::PointXYZ>> lidar_points;
+  LoadPointCloud(lidar_file, lidar_points);
+  std::map<int32_t, InitialExtrinsic> extrinsics;
+  LoadCalibFile(calib_file, extrinsics);
 
-  if (pcl::io::loadPCDFile<pcl::PointXYZ>(target_lidar_path, *target_cloud) ==
-      -1) {
-    LOGE("Couldn't read target lidar file \n");
-    return (-1);
+  // calibration
+  Calibrator calibrator;
+  calibrator.LoadCalibrationData(lidar_points, extrinsics);
+  auto time_begin = std::chrono::steady_clock::now();
+  calibrator.Calibrate();
+  auto time_end = std::chrono::steady_clock::now();
+  std::cout << "calib cost "
+            << std::chrono::duration<double>(time_end - time_begin).count()
+            << "s" << std::endl;
+  std::map<int32_t, Eigen::Matrix4d> refined_extrinsics =
+      calibrator.GetFinalTransformation();
+  // stitching
+  pcl::PointCloud<pcl::PointXYZRGB>::Ptr all_cloud(
+      new pcl::PointCloud<pcl::PointXYZRGB>);
+  auto master_iter = lidar_points.find(0);
+  pcl::PointCloud<pcl::PointXYZ> master_pc = master_iter->second;
+  for (auto src : master_pc.points) {
+    int32_t master_id = 0;
+    pcl::PointXYZRGB point;
+    point.x = src.x;
+    point.y = src.y;
+    point.z = src.z;
+    point.r = color_map[master_id % 7][0];
+    point.g = color_map[master_id % 7][1];
+    point.b = color_map[master_id % 7][2];
+    all_cloud->push_back(point);
   }
-  // load source lidar points
-  pcl::PointCloud<pcl::PointXYZ>::Ptr source_cloud(
-      new pcl::PointCloud<pcl::PointXYZ>);
-  if (pcl::io::loadPCDFile<pcl::PointXYZ>(source_lidar_path, *source_cloud) ==
-      -1) {
-    LOGE("Couldn't read source lidar file \n");
-    return (-1);
-  }
-  pcl::PointCloud<pcl::PointXYZ>::Ptr source_cloud_copy(
-      new pcl::PointCloud<pcl::PointXYZ>);
-  *source_cloud_copy = *source_cloud;
-  // load extrinsic
-  Eigen::Matrix4f json_param;
-  LoadExtrinsic(extrinsic_json, json_param);
-  pcl::transformPointCloud(*source_cloud, *source_cloud, json_param);
-  LOGI("Loading data completed!");
-  Eigen::Matrix4f transform = Eigen::Matrix4f::Identity();
-  Eigen::Matrix4f curr_transform = Eigen::Matrix4f::Identity();
-  pcl::PointCloud<pcl::PointXYZ>::Ptr source_filter_cloud(
-      new pcl::PointCloud<pcl::PointXYZ>);
-  pcl::PointCloud<pcl::PointXYZ>::Ptr target_filter_cloud(
-      new pcl::PointCloud<pcl::PointXYZ>);
 
-  // registration
-  Registrator registrator;
-  registrator.PointCloudDownSampling(source_cloud, source_filter_cloud);
-  registrator.PointCloudDownSampling(target_cloud, target_filter_cloud);
-  registrator.RegistrationByGroundPlane(source_filter_cloud,
-                                        target_filter_cloud, transform);
-  curr_transform = transform * curr_transform;
-  NDTParameter ndt_param;
-  ndt_param.ndt_step_size = 0.2;
-  ndt_param.resolution = 10;
-  ndt_param.ndt_transformation_epsilon = 0.1;
-  bool is_suceed = registrator.RegistrationByNDT(
-      source_filter_cloud, target_filter_cloud, ndt_param, transform);
-  if (!is_suceed) {
-    LOGE("registration failed");
-    return (-1);
-  }
-  curr_transform = transform * curr_transform;
-  ndt_param.ndt_step_size = 0.1;
-  ndt_param.resolution = 1;
-  ndt_param.ndt_transformation_epsilon = 0.02;
-  is_suceed = registrator.RegistrationByNDT(
-      source_filter_cloud, target_filter_cloud, ndt_param, transform);
-  if (!is_suceed) {
-    LOGE("registration failed");
-    return (-1);
-  }
-  curr_transform = transform * curr_transform;
-  registrator.RegistrationByVoxelOccupancy(source_filter_cloud,
-                                           target_filter_cloud, transform);
-  curr_transform = transform * curr_transform;
+  for (auto iter = refined_extrinsics.begin(); iter != refined_extrinsics.end();
+       iter++) {
+    int32_t slave_id = iter->first;
+    Eigen::Matrix4d transform = iter->second;
+    float degree_2_radian = 0.017453293;
+    LOGI("slave_id %d extrinsic T_ms is: roll = %f, pitch = %f, yaw =  %f, x = "
+         "%f, "
+         "y = %f, z = %f\n",
+         slave_id, TransformUtil::GetRoll(transform) / degree_2_radian,
+         TransformUtil::GetPitch(transform) / degree_2_radian,
+         TransformUtil::GetYaw(transform) / degree_2_radian, transform(0, 3),
+         transform(1, 3), transform(2, 3));
 
-  // save result
-  curr_transform = curr_transform * json_param;
-  pcl::transformPointCloud(*source_cloud_copy, *source_cloud_copy,
-                           curr_transform);
-  pcl::io::savePCDFile<pcl::PointXYZ>("source_cloud_trans.pcd",
-                                      *source_cloud_copy);
-  LOGI("calibration complete!");
-  std::cout << "the calibration result is " << std::endl;
-  std::cout << curr_transform << std::endl;
+    auto slave_iter = lidar_points.find(slave_id);
+    pcl::PointCloud<pcl::PointXYZ> slave_pc = slave_iter->second;
+
+    pcl::PointCloud<pcl::PointXYZ> trans_cloud;
+    pcl::transformPointCloud(slave_pc, trans_cloud, transform);
+    for (auto src : trans_cloud.points) {
+      pcl::PointXYZRGB point;
+      point.x = src.x;
+      point.y = src.y;
+      point.z = src.z;
+      point.r = color_map[slave_id % 7][0];
+      point.g = color_map[slave_id % 7][1];
+      point.b = color_map[slave_id % 7][2];
+      all_cloud->push_back(point);
+    }
+  }
+  all_cloud->height = 1;
+  all_cloud->width = all_cloud->points.size();
+  std::string path = "stitching.pcd";
+  pcl::io::savePCDFileBinary(path, *all_cloud);
   return 0;
 }
