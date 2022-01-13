@@ -20,6 +20,8 @@
 #include <pcl/sample_consensus/model_types.h>
 #include <pcl/segmentation/sac_segmentation.h>
 
+#include "plane_ground_filter_core.h"
+
 Calibrator::Calibrator() { registrator_.reset(new ICPRegistrator); }
 
 void Calibrator::LoadCalibrationData(
@@ -57,7 +59,7 @@ void Calibrator::Calibrate() {
     LOGE("master lidar ground fitting failed.\n");
     return;
   }
-  registrator_->SetTargetCloud(master_gcloud, master_ngcloud);
+  registrator_->SetTargetCloud(master_gcloud, master_ngcloud, master_pc_ptr);
   Eigen::Vector3d t_mp(0, 0,
                        -master_gplane.intercept / master_gplane.normal(2));
 
@@ -91,7 +93,7 @@ void Calibrator::Calibrate() {
       LOGE("slave %d lidar ground fitting failed.\n", slave_id);
       continue;
     }
-    registrator_->SetSourceCloud(slave_gcloud, slave_ngcloud);
+    registrator_->SetSourceCloud(slave_gcloud, slave_ngcloud, slave_pc_ptr);
     // ground plane align
     Eigen::Vector3d rot_axis2 = slave_gplane.normal.cross(master_gplane.normal);
     rot_axis2.normalize();
@@ -146,7 +148,11 @@ void Calibrator::Calibrate() {
     Eigen::Matrix4d yaw_opt_resust = TransformUtil::GetMatrix(
         TransformUtil::GetTranslation(init_guess),
         TransformUtil::GetRotation(init_roll, init_pitch, refined_yaw));
-
+    Eigen::Matrix4d final_opt_result;
+    // registrator_->RegistrationByNDT(yaw_opt_resust, final_opt_result);
+    // registrator_->RegistrationByGICP(yaw_opt_resust, final_opt_result);
+    // registrator_->RegistrationByPointToPlane(yaw_opt_resust,
+    // final_opt_result);
     refined_extrinsics_.insert(std::make_pair(slave_id, yaw_opt_resust));
   }
 }

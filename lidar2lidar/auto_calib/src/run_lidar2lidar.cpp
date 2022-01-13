@@ -132,13 +132,14 @@ int main(int argc, char *argv[]) {
     int32_t slave_id = iter->first;
     Eigen::Matrix4d transform = iter->second;
     float degree_2_radian = 0.017453293;
-    LOGI("slave_id %d extrinsic T_ms is: roll = %f, pitch = %f, yaw =  %f, x = "
-         "%f, "
-         "y = %f, z = %f\n",
-         slave_id, TransformUtil::GetRoll(transform) / degree_2_radian,
-         TransformUtil::GetPitch(transform) / degree_2_radian,
-         TransformUtil::GetYaw(transform) / degree_2_radian, transform(0, 3),
-         transform(1, 3), transform(2, 3));
+    // LOGI("slave_id %d extrinsic T_ms is: roll = %f, pitch = %f, yaw =  %f, x
+    // = "
+    //      "%f, "
+    //      "y = %f, z = %f\n",
+    //      slave_id, TransformUtil::GetRoll(transform) / degree_2_radian,
+    //      TransformUtil::GetPitch(transform) / degree_2_radian,
+    //      TransformUtil::GetYaw(transform) / degree_2_radian, transform(0, 3),
+    //      transform(1, 3), transform(2, 3));
 
     auto slave_iter = lidar_points.find(slave_id);
     pcl::PointCloud<pcl::PointXYZ> slave_pc = slave_iter->second;
