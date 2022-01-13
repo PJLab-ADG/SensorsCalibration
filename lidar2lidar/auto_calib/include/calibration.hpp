@@ -14,6 +14,7 @@
 #include <vector>
 
 #include "logging.hpp"
+#include "plane_ground_filter_core.h"
 #include "registration_icp.hpp"
 #include "transform_util.hpp"
 
@@ -21,32 +22,32 @@ struct InitialExtrinsic {
   Eigen::Vector3d euler_angles;
   Eigen::Vector3d t_matrix;
 };
-struct PlaneParam {
-  PlaneParam() {}
-  PlaneParam(const Eigen::Vector3d &n, double i) : normal(n), intercept(i) {}
-  Eigen::Vector3d normal;
-  double intercept;
-};
+// struct PlaneParam {
+//   PlaneParam() {}
+//   PlaneParam(const Eigen::Vector3d &n, double i) : normal(n), intercept(i) {}
+//   Eigen::Vector3d normal;
+//   double intercept;
+// };
 
 class Calibrator {
 public:
   Calibrator();
   void LoadCalibrationData(
-      const std::map<int32_t, pcl::PointCloud<pcl::PointXYZ>> lidar_points,
+      const std::map<int32_t, pcl::PointCloud<pcl::PointXYZI>> lidar_points,
       const std::map<int32_t, InitialExtrinsic> extrinsics);
   Eigen::Matrix3d GetRotation(double roll, double pitch, double yaw);
   Eigen::Matrix4d GetMatrix(const Eigen::Vector3d &translation,
                             const Eigen::Matrix3d &rotation);
   void Calibrate();
   bool
-  GroundPlaneExtraction(const pcl::PointCloud<pcl::PointXYZ>::Ptr &in_cloud,
-                        pcl::PointCloud<pcl::PointXYZ>::Ptr g_cloud,
-                        pcl::PointCloud<pcl::PointXYZ>::Ptr ng_cloud,
+  GroundPlaneExtraction(const pcl::PointCloud<pcl::PointXYZI>::Ptr &in_cloud,
+                        pcl::PointCloud<pcl::PointXYZI>::Ptr g_cloud,
+                        pcl::PointCloud<pcl::PointXYZI>::Ptr ng_cloud,
                         PlaneParam &plane);
   std::map<int32_t, Eigen::Matrix4d> GetFinalTransformation();
 
 private:
-  std::map<int32_t, pcl::PointCloud<pcl::PointXYZ>> pcs_;
+  std::map<int32_t, pcl::PointCloud<pcl::PointXYZI>> pcs_;
   std::map<int32_t, Eigen::Matrix4d> init_extrinsics_;
   std::map<int32_t, Eigen::Matrix4d> refined_extrinsics_;
 

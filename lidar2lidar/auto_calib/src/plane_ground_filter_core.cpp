@@ -1,4 +1,5 @@
 #include "plane_ground_filter_core.h"
+#include "logging.hpp"
 
 PlaneGroundFilter::PlaneGroundFilter() {
   sensor_height_ = 1.7;
@@ -10,6 +11,12 @@ PlaneGroundFilter::PlaneGroundFilter() {
   num_lpr_ = 20;
   th_seeds_ = 1.2;
   th_dist_ = 0.3;
+  th_dist_d_ = 0.2;
+  //
+  g_seeds_pc.reset(new pcl::PointCloud<pcl::PointXYZI>());
+  g_ground_pc.reset(new pcl::PointCloud<pcl::PointXYZI>());
+  g_not_ground_pc.reset(new pcl::PointCloud<pcl::PointXYZI>());
+  g_all_pc.reset(new pcl::PointCloud<pcl::PointXYZI>());
 }
 
 void PlaneGroundFilter::estimate_plane() {
@@ -31,7 +38,7 @@ void PlaneGroundFilter::estimate_plane() {
 }
 
 void PlaneGroundFilter::extract_initial_seeds(
-    const pcl::PointCloud<pcl::PointXYZ> &p_sorted) {
+    const pcl::PointCloud<pcl::PointXYZI> &p_sorted) {
   // LPR is the mean of low point representative
   double sum = 0;
   int cnt = 0;
@@ -52,9 +59,9 @@ void PlaneGroundFilter::extract_initial_seeds(
 }
 
 void PlaneGroundFilter::clip_above(
-    const pcl::PointCloud<pcl::PointXYZ>::Ptr in,
-    const pcl::PointCloud<pcl::PointXYZ>::Ptr out) {
-  pcl::ExtractIndices<pcl::PointXYZ> cliper;
+    const pcl::PointCloud<pcl::PointXYZI>::Ptr in,
+    const pcl::PointCloud<pcl::PointXYZI>::Ptr out) {
+  pcl::ExtractIndices<pcl::PointXYZI> cliper;
 
   cliper.setInputCloud(in);
   pcl::PointIndices indices;
@@ -70,9 +77,9 @@ void PlaneGroundFilter::clip_above(
 }
 
 void PlaneGroundFilter::remove_close_far_pt(
-    const pcl::PointCloud<pcl::PointXYZ>::Ptr in,
-    const pcl::PointCloud<pcl::PointXYZ>::Ptr out) {
-  pcl::ExtractIndices<pcl::PointXYZ> cliper;
+    const pcl::PointCloud<pcl::PointXYZI>::Ptr in,
+    const pcl::PointCloud<pcl::PointXYZI>::Ptr out) {
+  pcl::ExtractIndices<pcl::PointXYZI> cliper;
 
   cliper.setInputCloud(in);
   pcl::PointIndices indices;
@@ -91,29 +98,30 @@ void PlaneGroundFilter::remove_close_far_pt(
 }
 
 void PlaneGroundFilter::post_process(
-    const pcl::PointCloud<pcl::PointXYZ>::Ptr in,
-    const pcl::PointCloud<pcl::PointXYZ>::Ptr out) {
-  const pcl::PointCloud<pcl::PointXYZ>::Ptr cliped_pc_ptr(
-      new pcl::PointCloud<pcl::PointXYZ>);
+    const pcl::PointCloud<pcl::PointXYZI>::Ptr in,
+    const pcl::PointCloud<pcl::PointXYZI>::Ptr out) {
+  const pcl::PointCloud<pcl::PointXYZI>::Ptr cliped_pc_ptr(
+      new pcl::PointCloud<pcl::PointXYZI>);
   clip_above(in, cliped_pc_ptr);
-  const pcl::PointCloud<pcl::PointXYZ>::Ptr remove_close(
-      new pcl::PointCloud<pcl::PointXYZ>);
+  const pcl::PointCloud<pcl::PointXYZI>::Ptr remove_close(
+      new pcl::PointCloud<pcl::PointXYZI>);
   remove_close_far_pt(cliped_pc_ptr, out);
 }
-bool point_cmp(pcl::PointXYZ a, pcl::PointXYZ b) { return a.z < b.z; }
+bool point_cmp(pcl::PointXYZI a, pcl::PointXYZI b) { return a.z < b.z; }
 void PlaneGroundFilter::point_cb(
-    const pcl::PointCloud<pcl::PointXYZ> &in_cloud) {
+    const pcl::PointCloud<pcl::PointXYZI> &in_cloud,
+    pcl::PointCloud<pcl::PointXYZI>::Ptr g_cloud,
+    pcl::PointCloud<pcl::PointXYZI>::Ptr ng_cloud, PlaneParam &plane) {
   g_all_pc = in_cloud.makeShared();
-  pcl::PointCloud<pcl::PointXYZ> laserCloudIn = in_cloud;
-  pcl::PointCloud<pcl::PointXYZ> laserCloudIn_org = in_cloud;
-
+  pcl::PointCloud<pcl::PointXYZI> laserCloudIn = in_cloud;
+  pcl::PointCloud<pcl::PointXYZI> laserCloudIn_org = in_cloud;
   // 2.Sort on Z-axis value.
   sort(laserCloudIn.points.begin(), laserCloudIn.end(), point_cmp);
   // 3.Error point removal
   // As there are some error mirror reflection under the ground,
   // here regardless point under 2* sensor_height
   // Sort point according to height, here uses z-axis in default
-  pcl::PointCloud<pcl::PointXYZ>::iterator it = laserCloudIn.points.begin();
+  pcl::PointCloud<pcl::PointXYZI>::iterator it = laserCloudIn.points.begin();
   for (int i = 0; i < laserCloudIn.points.size(); i++) {
     if (laserCloudIn.points[i].z < -1.5 * sensor_height_) {
       it++;
@@ -138,10 +146,10 @@ void PlaneGroundFilter::point_cb(
       points.row(j++) << p.x, p.y, p.z;
     }
     // ground plane model
-    Eigen::Matrix3f result = points * normal_;
+    Eigen::VectorXf result = points * normal_;
     // threshold filter
     for (int r = 0; r < result.rows(); r++) {
-      if (result(r) < th_dist_d_) {
+      if (result[r] < th_dist_d_) {
         // g_all_pc->points[r].label = 1u; // means ground
         g_ground_pc->points.push_back(laserCloudIn_org[r]);
       } else {
@@ -151,7 +159,24 @@ void PlaneGroundFilter::point_cb(
       }
     }
   }
-  pcl::PointCloud<pcl::PointXYZ>::Ptr final_no_ground(
-      new pcl::PointCloud<pcl::PointXYZ>);
+  pcl::PointCloud<pcl::PointXYZI>::Ptr final_no_ground(
+      new pcl::PointCloud<pcl::PointXYZI>);
   post_process(g_not_ground_pc, final_no_ground);
+  // return params
+  *g_cloud = *g_ground_pc;
+  *ng_cloud = *final_no_ground;
+  plane.normal(0) = normal_(0);
+  plane.normal(1) = normal_(1);
+  plane.normal(2) = normal_(2);
+  plane.intercept = d_;
+  //   pcl::io::savePCDFileBinary("ground.pcd", *g_ground_pc);
+  //   pcl::io::savePCDFileBinary("no_ground.pcd", *final_no_ground);
+}
+
+bool PlaneGroundFilter::GroundPlaneExtraction(
+    const pcl::PointCloud<pcl::PointXYZI>::Ptr &in_cloud,
+    pcl::PointCloud<pcl::PointXYZI>::Ptr g_cloud,
+    pcl::PointCloud<pcl::PointXYZI>::Ptr ng_cloud, PlaneParam &plane) {
+  point_cb(*in_cloud, g_cloud, ng_cloud, plane);
+  return true;
 }

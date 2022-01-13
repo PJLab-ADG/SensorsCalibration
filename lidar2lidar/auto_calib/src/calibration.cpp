@@ -20,12 +20,10 @@
 #include <pcl/sample_consensus/model_types.h>
 #include <pcl/segmentation/sac_segmentation.h>
 
-#include "plane_ground_filter_core.h"
-
 Calibrator::Calibrator() { registrator_.reset(new ICPRegistrator); }
 
 void Calibrator::LoadCalibrationData(
-    const std::map<int32_t, pcl::PointCloud<pcl::PointXYZ>> lidar_points,
+    const std::map<int32_t, pcl::PointCloud<pcl::PointXYZI>> lidar_points,
     const std::map<int32_t, InitialExtrinsic> extrinsics) {
   pcs_ = lidar_points;
   for (auto src : extrinsics) {
@@ -46,15 +44,26 @@ void Calibrator::Calibrate() {
   LOGI("calibrate");
   int32_t master_id = 0;
   auto master_iter = pcs_.find(master_id);
-  pcl::PointCloud<pcl::PointXYZ> master_pc = master_iter->second;
-  pcl::PointCloud<pcl::PointXYZ>::Ptr master_pc_ptr = master_pc.makeShared();
+  pcl::PointCloud<pcl::PointXYZI> master_pc = master_iter->second;
+  pcl::PointCloud<pcl::PointXYZI>::Ptr master_pc_ptr = master_pc.makeShared();
   PlaneParam master_gplane;
-  pcl::PointCloud<pcl::PointXYZ>::Ptr master_gcloud(
-      new pcl::PointCloud<pcl::PointXYZ>);
-  pcl::PointCloud<pcl::PointXYZ>::Ptr master_ngcloud(
-      new pcl::PointCloud<pcl::PointXYZ>);
-  bool ret = GroundPlaneExtraction(master_pc_ptr, master_gcloud, master_ngcloud,
-                                   master_gplane);
+  pcl::PointCloud<pcl::PointXYZI>::Ptr master_gcloud(
+      new pcl::PointCloud<pcl::PointXYZI>);
+  pcl::PointCloud<pcl::PointXYZI>::Ptr master_ngcloud(
+      new pcl::PointCloud<pcl::PointXYZI>);
+  // bool ret = GroundPlaneExtraction(master_pc_ptr, master_gcloud,
+  // master_ngcloud,
+  //                                  master_gplane);
+  // std::cout<<master_gplane.normal<<std::endl;
+  // std::cout<<master_gplane.intercept<<std::endl;
+  // pcl::io::savePCDFileBinary("ran_ground.pcd", *master_gcloud);
+  // pcl::io::savePCDFileBinary("ran_no_ground.pcd", *master_ngcloud);
+  PlaneGroundFilter plane_ground_filter;
+  bool ret = plane_ground_filter.GroundPlaneExtraction(
+      master_pc_ptr, master_gcloud, master_ngcloud, master_gplane);
+  // std::cout<<master_gplane.normal<<std::endl;
+  // std::cout<<master_gplane.intercept<<std::endl;
+  // return;
   if (!ret) {
     LOGE("master lidar ground fitting failed.\n");
     return;
@@ -69,7 +78,7 @@ void Calibrator::Calibrate() {
     if (slave_id == master_id)
       continue;
     LOGI("start calibrating slave lidar, id: %d\n", slave_id);
-    pcl::PointCloud<pcl::PointXYZ> slave_pc = iter->second;
+    pcl::PointCloud<pcl::PointXYZI> slave_pc = iter->second;
     if (init_extrinsics_.find(slave_id) == init_extrinsics_.end()) {
       LOGE("cannot find the init extrinsic, slave id: %d\n", slave_id);
       return;
@@ -81,14 +90,17 @@ void Calibrator::Calibrate() {
          TransformUtil::GetPitch(init_ext) / degree_2_radian,
          TransformUtil::GetYaw(init_ext) / degree_2_radian, init_ext(0, 3),
          init_ext(1, 3), init_ext(2, 3));
-    pcl::PointCloud<pcl::PointXYZ>::Ptr slave_pc_ptr = slave_pc.makeShared();
+    pcl::PointCloud<pcl::PointXYZI>::Ptr slave_pc_ptr = slave_pc.makeShared();
     PlaneParam slave_gplane;
-    pcl::PointCloud<pcl::PointXYZ>::Ptr slave_gcloud(
-        new pcl::PointCloud<pcl::PointXYZ>);
-    pcl::PointCloud<pcl::PointXYZ>::Ptr slave_ngcloud(
-        new pcl::PointCloud<pcl::PointXYZ>);
+    pcl::PointCloud<pcl::PointXYZI>::Ptr slave_gcloud(
+        new pcl::PointCloud<pcl::PointXYZI>);
+    pcl::PointCloud<pcl::PointXYZI>::Ptr slave_ngcloud(
+        new pcl::PointCloud<pcl::PointXYZI>);
     ret = GroundPlaneExtraction(slave_pc_ptr, slave_gcloud, slave_ngcloud,
                                 slave_gplane);
+    // ret = plane_ground_filter.GroundPlaneExtraction(slave_pc_ptr,
+    // slave_gcloud, slave_ngcloud,
+    //                              slave_gplane);
     if (!ret) {
       LOGE("slave %d lidar ground fitting failed.\n", slave_id);
       continue;
@@ -140,30 +152,25 @@ void Calibrator::Calibrate() {
          pitch, z);
     // registration
     double refined_yaw = 0;
-    // YawAligh(master_ngcloud, slave_ngcloud, init_guess, &refined_yaw);
     registrator_->RegistrationByICP(init_guess, &refined_yaw);
-    // Eigen::Matrix4d refine_trans = registrator_->GetFinalTransformation();
     double init_roll = TransformUtil::GetRoll(init_guess);
     double init_pitch = TransformUtil::GetPitch(init_guess);
     Eigen::Matrix4d yaw_opt_resust = TransformUtil::GetMatrix(
         TransformUtil::GetTranslation(init_guess),
         TransformUtil::GetRotation(init_roll, init_pitch, refined_yaw));
     Eigen::Matrix4d final_opt_result;
-    // registrator_->RegistrationByNDT(yaw_opt_resust, final_opt_result);
-    // registrator_->RegistrationByGICP(yaw_opt_resust, final_opt_result);
-    // registrator_->RegistrationByPointToPlane(yaw_opt_resust,
-    // final_opt_result);
-    refined_extrinsics_.insert(std::make_pair(slave_id, yaw_opt_resust));
+    registrator_->RegistrationByICP2(yaw_opt_resust, final_opt_result);
+    refined_extrinsics_.insert(std::make_pair(slave_id, final_opt_result));
   }
 }
 
 bool Calibrator::GroundPlaneExtraction(
-    const pcl::PointCloud<pcl::PointXYZ>::Ptr &in_cloud,
-    pcl::PointCloud<pcl::PointXYZ>::Ptr g_cloud,
-    pcl::PointCloud<pcl::PointXYZ>::Ptr ng_cloud, PlaneParam &plane) {
+    const pcl::PointCloud<pcl::PointXYZI>::Ptr &in_cloud,
+    pcl::PointCloud<pcl::PointXYZI>::Ptr g_cloud,
+    pcl::PointCloud<pcl::PointXYZI>::Ptr ng_cloud, PlaneParam &plane) {
   pcl::ModelCoefficients::Ptr coefficients(new pcl::ModelCoefficients);
   pcl::PointIndices::Ptr inliers(new pcl::PointIndices);
-  pcl::SACSegmentation<pcl::PointXYZ> seg;
+  pcl::SACSegmentation<pcl::PointXYZI> seg;
   seg.setOptimizeCoefficients(true);
   seg.setModelType(pcl::SACMODEL_PLANE);
   seg.setMethodType(pcl::SAC_RANSAC);
@@ -174,7 +181,7 @@ bool Calibrator::GroundPlaneExtraction(
     PCL_ERROR("Could not estimate a planar model for the given dataset.");
     return false;
   }
-  pcl::ExtractIndices<pcl::PointXYZ> extract;
+  pcl::ExtractIndices<pcl::PointXYZI> extract;
   extract.setInputCloud(in_cloud);
   extract.setIndices(inliers);
   extract.filter(*g_cloud);

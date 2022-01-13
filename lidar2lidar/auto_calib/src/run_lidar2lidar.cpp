@@ -25,7 +25,7 @@ unsigned char color_map[10][3] = {{255, 255, 255}, // "white"
 
 void LoadPointCloud(
     const std::string &filename,
-    std::map<int32_t, pcl::PointCloud<pcl::PointXYZ>> &lidar_points) {
+    std::map<int32_t, pcl::PointCloud<pcl::PointXYZI>> &lidar_points) {
   std::ifstream file(filename);
   if (!file.is_open()) {
     std::cout << "[ERROR] open file " << filename << " failed." << std::endl;
@@ -35,8 +35,8 @@ void LoadPointCloud(
   while (getline(file, line)) {
     int32_t device_id;
     std::string point_cloud_path;
-    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(
-        new pcl::PointCloud<pcl::PointXYZ>);
+    pcl::PointCloud<pcl::PointXYZI>::Ptr cloud(
+        new pcl::PointCloud<pcl::PointXYZI>);
 
     std::stringstream ss(line);
     ss >> tmpStr >> device_id;
@@ -48,7 +48,7 @@ void LoadPointCloud(
       exit(1);
     }
 
-    // std::vector<senselidar::calibration::PointXYZ> point =
+    // std::vector<senselidar::calibration::PointXYZI> point =
     //     GetPointFromPclPointCloud(cloud);
     lidar_points.insert(std::make_pair(device_id, *cloud));
   }
@@ -94,7 +94,7 @@ int main(int argc, char *argv[]) {
   auto lidar_file = argv[1];
   auto calib_file = argv[2];
   auto output_dir = argv[3];
-  std::map<int32_t, pcl::PointCloud<pcl::PointXYZ>> lidar_points;
+  std::map<int32_t, pcl::PointCloud<pcl::PointXYZI>> lidar_points;
   LoadPointCloud(lidar_file, lidar_points);
   std::map<int32_t, InitialExtrinsic> extrinsics;
   LoadCalibFile(calib_file, extrinsics);
@@ -114,7 +114,7 @@ int main(int argc, char *argv[]) {
   pcl::PointCloud<pcl::PointXYZRGB>::Ptr all_cloud(
       new pcl::PointCloud<pcl::PointXYZRGB>);
   auto master_iter = lidar_points.find(0);
-  pcl::PointCloud<pcl::PointXYZ> master_pc = master_iter->second;
+  pcl::PointCloud<pcl::PointXYZI> master_pc = master_iter->second;
   for (auto src : master_pc.points) {
     int32_t master_id = 0;
     pcl::PointXYZRGB point;
@@ -142,9 +142,9 @@ int main(int argc, char *argv[]) {
     //      transform(1, 3), transform(2, 3));
 
     auto slave_iter = lidar_points.find(slave_id);
-    pcl::PointCloud<pcl::PointXYZ> slave_pc = slave_iter->second;
+    pcl::PointCloud<pcl::PointXYZI> slave_pc = slave_iter->second;
 
-    pcl::PointCloud<pcl::PointXYZ> trans_cloud;
+    pcl::PointCloud<pcl::PointXYZI> trans_cloud;
     pcl::transformPointCloud(slave_pc, trans_cloud, transform);
     for (auto src : trans_cloud.points) {
       pcl::PointXYZRGB point;

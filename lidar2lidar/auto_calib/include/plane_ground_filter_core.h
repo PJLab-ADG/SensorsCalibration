@@ -10,9 +10,17 @@
 #include <pcl/conversions.h>
 #include <pcl/filters/extract_indices.h>
 #include <pcl/filters/filter.h>
+#include <pcl/io/pcd_io.h>
 #include <pcl/point_types.h>
 
 #include <Eigen/Dense>
+
+struct PlaneParam {
+  PlaneParam() {}
+  PlaneParam(const Eigen::Vector3d &n, double i) : normal(n), intercept(i) {}
+  Eigen::Vector3d normal;
+  double intercept;
+};
 
 class PlaneGroundFilter {
 
@@ -29,22 +37,32 @@ private:
   float d_, th_dist_d_;
   Eigen::MatrixXf normal_;
 
-  pcl::PointCloud<pcl::PointXYZ>::Ptr g_seeds_pc;
-  pcl::PointCloud<pcl::PointXYZ>::Ptr g_ground_pc;
-  pcl::PointCloud<pcl::PointXYZ>::Ptr g_not_ground_pc;
-  pcl::PointCloud<pcl::PointXYZ>::Ptr g_all_pc;
+  pcl::PointCloud<pcl::PointXYZI>::Ptr g_seeds_pc;
+  pcl::PointCloud<pcl::PointXYZI>::Ptr g_ground_pc;
+  pcl::PointCloud<pcl::PointXYZI>::Ptr g_not_ground_pc;
+  pcl::PointCloud<pcl::PointXYZI>::Ptr g_all_pc;
 
   void estimate_plane();
-  void extract_initial_seeds(const pcl::PointCloud<pcl::PointXYZ> &p_sorted);
-  void post_process(const pcl::PointCloud<pcl::PointXYZ>::Ptr in,
-                    const pcl::PointCloud<pcl::PointXYZ>::Ptr out);
-  void point_cb(const pcl::PointCloud<pcl::PointXYZ> &in_cloud);
-  void clip_above(const pcl::PointCloud<pcl::PointXYZ>::Ptr in,
-                  const pcl::PointCloud<pcl::PointXYZ>::Ptr out);
-  void remove_close_far_pt(const pcl::PointCloud<pcl::PointXYZ>::Ptr in,
-                           const pcl::PointCloud<pcl::PointXYZ>::Ptr out);
+  void extract_initial_seeds(const pcl::PointCloud<pcl::PointXYZI> &p_sorted);
+  void post_process(const pcl::PointCloud<pcl::PointXYZI>::Ptr in,
+                    const pcl::PointCloud<pcl::PointXYZI>::Ptr out);
+
+  void clip_above(const pcl::PointCloud<pcl::PointXYZI>::Ptr in,
+                  const pcl::PointCloud<pcl::PointXYZI>::Ptr out);
+  void remove_close_far_pt(const pcl::PointCloud<pcl::PointXYZI>::Ptr in,
+                           const pcl::PointCloud<pcl::PointXYZI>::Ptr out);
+  void point_cb(const pcl::PointCloud<pcl::PointXYZI> &in_cloud,
+                pcl::PointCloud<pcl::PointXYZI>::Ptr g_cloud,
+                pcl::PointCloud<pcl::PointXYZI>::Ptr ng_cloud,
+                PlaneParam &plane);
 
 public:
   PlaneGroundFilter();
   ~PlaneGroundFilter(){};
+
+  bool
+  GroundPlaneExtraction(const pcl::PointCloud<pcl::PointXYZI>::Ptr &in_cloud,
+                        pcl::PointCloud<pcl::PointXYZI>::Ptr g_cloud,
+                        pcl::PointCloud<pcl::PointXYZI>::Ptr ng_cloud,
+                        PlaneParam &plane);
 };
