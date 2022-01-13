@@ -51,16 +51,15 @@ void Calibrator::Calibrate() {
       new pcl::PointCloud<pcl::PointXYZI>);
   pcl::PointCloud<pcl::PointXYZI>::Ptr master_ngcloud(
       new pcl::PointCloud<pcl::PointXYZI>);
-  // bool ret = GroundPlaneExtraction(master_pc_ptr, master_gcloud,
-  // master_ngcloud,
-  //                                  master_gplane);
+  bool ret = GroundPlaneExtraction(master_pc_ptr, master_gcloud,
+  master_ngcloud, master_gplane);
   // std::cout<<master_gplane.normal<<std::endl;
   // std::cout<<master_gplane.intercept<<std::endl;
   // pcl::io::savePCDFileBinary("ran_ground.pcd", *master_gcloud);
   // pcl::io::savePCDFileBinary("ran_no_ground.pcd", *master_ngcloud);
-  PlaneGroundFilter plane_ground_filter;
-  bool ret = plane_ground_filter.GroundPlaneExtraction(
-      master_pc_ptr, master_gcloud, master_ngcloud, master_gplane);
+  // PlaneGroundFilter plane_ground_filter;
+  // bool ret = plane_ground_filter.GroundPlaneExtraction(
+  //     master_pc_ptr, master_gcloud, master_ngcloud, master_gplane);
   // std::cout<<master_gplane.normal<<std::endl;
   // std::cout<<master_gplane.intercept<<std::endl;
   // return;

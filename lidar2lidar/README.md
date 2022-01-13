@@ -91,7 +91,6 @@ According to the figure below for data collection, the calibration vehicle recor
 1. Ensure that the ground is sufficiently flat
 2. Ensure that there are enough features around, such as walls, lane lines, poles, stationary vehicles, etc.
 3. Try not to have dynamic objects around, such as vehicles, etc.
-4. There are six point cloud registration methods, which can be selected according to different calibration environments.
 
 ## Usage
 
@@ -109,9 +108,10 @@ According to the figure below for data collection, the calibration vehicle recor
 
    ```
    cd ~./auto_calib/
-   ./bin/run_lidar2lidar data/top_center_lidar.pcd data/front_lidar.pcd data/front_lidar-to-top_center_lidar-extrinsic.json
+   ./bin/run_lidar2lidar test_data/hesai/scene1/lidar_cloud_path.txt test_data/hesai/scene1/initial_extrinsic.txt outputs
    ```
 
 3. Calibration result:
 
-    <img src="./images/result.png" width="100%" height="100%" alt="lidar2camera_panel" div align=center /><br>
+    <img src="./images/result1.png" width="100%" height="100%" alt="lidar2camera_panel" div align=center /><br><br>
+    <img src="./images/result2.png" width="100%" height="100%" alt="lidar2camera_panel" div align=center /><br>
