@@ -159,6 +159,9 @@ void Calibrator::Calibrate() {
         TransformUtil::GetRotation(init_roll, init_pitch, refined_yaw));
     Eigen::Matrix4d final_opt_result;
     registrator_->RegistrationByICP2(yaw_opt_resust, final_opt_result);
+    Eigen::Matrix4d temp = final_opt_result;
+    registrator_->RegistrationByVoxelOccupancy(temp, final_opt_result);
+
     refined_extrinsics_.insert(std::make_pair(slave_id, final_opt_result));
   }
 }

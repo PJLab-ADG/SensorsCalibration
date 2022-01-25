@@ -198,9 +198,9 @@ void Calibrator::Calibration(const std::string lidar_path,
   // save refined calib
   std::string refine_calib_file = "./refined_calib_imu_to_lidar.txt";
   Eigen::Matrix4d deltaTrans = Eigen::Matrix4d::Identity();
-  // SaveStitching(deltaTrans,"before.pcd");
+  SaveStitching(deltaTrans,"before.pcd");
   deltaTrans = GetDeltaTrans(deltaRPY, deltaT);
-  // SaveStitching(deltaTrans,"after.pcd");
+  SaveStitching(deltaTrans,"after.pcd");
   std::cout << "delta T is:" << std::endl;
   std::cout << deltaTrans << std::endl;
   auto refined_Tl2i = init_Tl2i * deltaTrans;
@@ -240,7 +240,7 @@ void Calibrator::SaveStitching(const Eigen::Matrix4d transform,
   pcl::PointCloud<pcl::PointXYZI>::Ptr all_cloud(
       new pcl::PointCloud<pcl::PointXYZI>());
   pcl::octree::OctreePointCloudSearch<pcl::PointXYZI>::Ptr all_octree(
-      new pcl::octree::OctreePointCloudSearch<pcl::PointXYZI>(0.1));
+      new pcl::octree::OctreePointCloudSearch<pcl::PointXYZI>(0.3));
 
   all_octree->setInputCloud(all_cloud);
   pcl::PointCloud<pcl::PointXYZI>::Ptr cloud(

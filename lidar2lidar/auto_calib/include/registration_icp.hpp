@@ -14,7 +14,7 @@
 
 class ICPRegistrator {
 public:
-  ICPRegistrator(){};
+  ICPRegistrator();
   void SetTargetCloud(const pcl::PointCloud<pcl::PointXYZI>::Ptr &gcloud,
                       const pcl::PointCloud<pcl::PointXYZI>::Ptr &ngcloud,
                       const pcl::PointCloud<pcl::PointXYZI>::Ptr &cloud);
@@ -32,6 +32,10 @@ public:
 
   void computeNormals(const pcl::PointCloud<pcl::PointXYZI>::Ptr in_pts,
                       pcl::PointCloud<pcl::PointXYZINormal>::Ptr out_pts);
+  bool RegistrationByVoxelOccupancy(const Eigen::Matrix4d &init_guess,
+                          Eigen::Matrix4d &refined_extrinsic);
+  size_t
+  ComputeVoxelOccupancy(const Eigen::Matrix4d &init_guess);
 
 private:
   pcl::PointCloud<pcl::PointXYZI>::Ptr tgt_gcloud_;
@@ -40,6 +44,9 @@ private:
   pcl::PointCloud<pcl::PointXYZI>::Ptr src_gcloud_;
   pcl::PointCloud<pcl::PointXYZI>::Ptr src_ngcloud_;
   pcl::PointCloud<pcl::PointXYZI>::Ptr src_cloud_;
+
+  pcl::PointCloud<pcl::PointXYZI>::Ptr all_cloud_;
+  pcl::octree::OctreePointCloudSearch<pcl::PointXYZI>::Ptr all_octree_;
 
   Eigen::Matrix4d final_transformation_;
 };
