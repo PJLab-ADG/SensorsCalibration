@@ -7,8 +7,7 @@
 #include <pcl/registration/icp_nl.h>
 #include <pcl/registration/ndt.h>
 
-ICPRegistrator::ICPRegistrator()
-{
+ICPRegistrator::ICPRegistrator() {
   all_cloud_.reset(new pcl::PointCloud<pcl::PointXYZI>());
   all_octree_.reset(
       new pcl::octree::OctreePointCloudSearch<pcl::PointXYZI>(0.05));
@@ -160,16 +159,15 @@ void ICPRegistrator::computeNormals(
 }
 
 // Fine tune in translation
-bool ICPRegistrator::RegistrationByVoxelOccupancy(const Eigen::Matrix4d &init_guess,
-                          Eigen::Matrix4d &refined_extrinsic)
-{
+bool ICPRegistrator::RegistrationByVoxelOccupancy(
+    const Eigen::Matrix4d &init_guess, Eigen::Matrix4d &refined_extrinsic) {
   double init_roll = TransformUtil::GetRoll(init_guess);
   double init_pitch = TransformUtil::GetPitch(init_guess);
   double init_yaw = TransformUtil::GetYaw(init_guess);
   double init_x = TransformUtil::GetX(init_guess);
   double init_y = TransformUtil::GetY(init_guess);
   double init_z = TransformUtil::GetZ(init_guess);
-  
+
   double delta_tx = 0;
   double delta_ty = 0;
   double best_tx = 0;
@@ -177,20 +175,21 @@ bool ICPRegistrator::RegistrationByVoxelOccupancy(const Eigen::Matrix4d &init_gu
   int max_iter = 10;
   double resolution = 0.02;
   int direction[2] = {1, -1};
-  
+
   double min_voxel_occupancy = ComputeVoxelOccupancy(init_guess);
   float var[6] = {0}, bestVal[6] = {0};
   std::string varName[6] = {"roll", "pitch", "yaw", "tx", "ty", "tz"};
-  // tx 
+  // tx
   for (int j = 0; j <= 1; j++) {
     for (int iter = 1; iter < max_iter; iter++) {
 
       var[3] = iter * direction[j] * resolution;
-      
+
       Eigen::Matrix4d T = TransformUtil::GetDeltaT(var) * init_guess;
       // delta_tx = iter * direction[j] * resolution + init_x;
-      // Eigen::Matrix4d T = TransformUtil::GetMatrix(delta_tx, init_y, init_z, init_roll, init_pitch, init_yaw);
-      
+      // Eigen::Matrix4d T = TransformUtil::GetMatrix(delta_tx, init_y, init_z,
+      // init_roll, init_pitch, init_yaw);
+
       size_t cnt = ComputeVoxelOccupancy(T);
       if (cnt < min_voxel_occupancy * (1 - 1e-4)) {
         min_voxel_occupancy = cnt;
@@ -204,14 +203,15 @@ bool ICPRegistrator::RegistrationByVoxelOccupancy(const Eigen::Matrix4d &init_gu
     }
   }
   var[3] = bestVal[3];
-  // ty 
+  // ty
   for (int j = 0; j <= 1; j++) {
     for (int iter = 1; iter < max_iter; iter++) {
 
       var[4] = iter * direction[j] * resolution;
       Eigen::Matrix4d T = TransformUtil::GetDeltaT(var) * init_guess;
       // delta_ty = iter * direction[j] * resolution + init_y;
-      // Eigen::Matrix4d T = TransformUtil::GetMatrix(best_tx, delta_ty, init_z, init_roll, init_pitch, init_yaw);
+      // Eigen::Matrix4d T = TransformUtil::GetMatrix(best_tx, delta_ty, init_z,
+      // init_roll, init_pitch, init_yaw);
       size_t cnt = ComputeVoxelOccupancy(T);
       if (cnt < min_voxel_occupancy * (1 - 1e-4)) {
         min_voxel_occupancy = cnt;
@@ -228,19 +228,17 @@ bool ICPRegistrator::RegistrationByVoxelOccupancy(const Eigen::Matrix4d &init_gu
   refined_extrinsic = TransformUtil::GetDeltaT(bestVal) * init_guess;
 }
 
-size_t ICPRegistrator::ComputeVoxelOccupancy(const Eigen::Matrix4d &init_guess)
-{
+size_t
+ICPRegistrator::ComputeVoxelOccupancy(const Eigen::Matrix4d &init_guess) {
   pcl::PointCloud<pcl::PointXYZI> trans_cloud;
   pcl::transformPointCloud(*src_ngcloud_, trans_cloud, init_guess);
-  for (const auto src_pt : tgt_ngcloud_->points)
-  {
-     if (!all_octree_->isVoxelOccupiedAtPoint(src_pt)) {
+  for (const auto src_pt : tgt_ngcloud_->points) {
+    if (!all_octree_->isVoxelOccupiedAtPoint(src_pt)) {
       all_octree_->addPointToCloud(src_pt, all_cloud_);
     }
   }
-  for (const auto src_pt : trans_cloud.points)
-  {
-     if (!all_octree_->isVoxelOccupiedAtPoint(src_pt)) {
+  for (const auto src_pt : trans_cloud.points) {
+    if (!all_octree_->isVoxelOccupiedAtPoint(src_pt)) {
       all_octree_->addPointToCloud(src_pt, all_cloud_);
     }
   }
