@@ -24,21 +24,7 @@ int main(int argc, char **argv) {
   std::string pcds_dir = argv[1];
   // round hole board
   lidarcalib::LidarDetector lidar_detector;
-  bool sta = lidar_detector.LidarCircleCenterDetection(pcds_dir, true, true);
-  std::vector<lidarcalib::Point3D> lidar_output =
-      lidar_detector.GetLidarDetectPoints();
-
-  if (sta) {
-    std::cout << "\nDetection Success!\n";
-    std::cout << "Number of Centers is " << lidar_output.size() << std::endl;
-    for (size_t i = 0; i < lidar_output.size(); i++) {
-      std::cout << "marker" << i << ": " << lidar_output[i].x << " "
-                << lidar_output[i].y << " " << lidar_output[i].z << std::endl;
-    }
-
-  } else {
-    std::cout << "\nDetection Failed!\n";
-  }
+  lidar_detector.LidarDetection(pcds_dir);
 
   return 0;
 }
