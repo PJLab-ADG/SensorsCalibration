@@ -134,11 +134,11 @@ This automatic and user-friendly calibration tool is for calibrating the extrins
 ## Citation
 This distortion evaluation code is based on the research below:
 ```
-@article{ma2021crlf,
-  title={CRLF: Automatic Calibration and Refinement based on Line Feature for LiDAR and Camera in Road Scenes},
-  author={Ma, Tao and Liu, Zhizheng and Yan, Guohang and Li, Yikang},
-  journal={arXiv preprint arXiv:2103.04558},
-  year={2021}
+@misc{2202.13708,
+Author = {Guohang Yan and Feiyu He and Chunlei Shi and Xinyu Cai and Yikang Li},
+Title = {Joint Camera Intrinsic and LiDAR-Camera Extrinsic Calibration},
+Year = {2022},
+Eprint = {arXiv:2202.13708},
 }
    
 ```
