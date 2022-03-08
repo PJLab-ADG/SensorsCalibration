@@ -1,0 +1,43 @@
+{
+    "rear_radar-to-top_center_lidar-extrinsic": {
+        "sensor_name": "rear_radar",
+        "target_sensor_name": "top_center_lidar",
+        "device_type": "relational",
+        "param_type": "extrinsic",
+        "param": {
+            "time_lag": 0,
+            "sensor_calib": {
+                "rows": 4,
+                "cols": 4,
+                "type": 6,
+                "continuous": true,
+                "data": [
+                    [
+                        -0.999123,
+                        0.0418757,
+                        0,
+                        -2.4
+                    ],
+                    [
+                        -0.0418757,
+                        -0.999123,
+                        -0,
+                        1.38778e-17
+                    ],
+                    [
+                        0,
+                        0,
+                        1,
+                        -1.88
+                    ],
+                    [
+                        -0,
+                        0,
+                        -0,
+                        1
+                    ]
+                ]
+            }
+        }
+    }
+}

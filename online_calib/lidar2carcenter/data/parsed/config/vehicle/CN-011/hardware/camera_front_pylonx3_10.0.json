@@ -1,0 +1,28 @@
+{
+    "camera_front_pylonx3_10.0": {
+        "sensor_name": "camera_front_pylonx3_10.0",
+        "target_sensor_name": "camera_front_pylonx3_10.0",
+        "device_type": "camera",
+        "param_type": "hardware",
+        "param": {
+            "type": "CameraPylon",
+            "property": {
+                "port_id": 0,
+                "width": 1920,
+                "height": 1200,
+                "buffer_size": 10,
+                "framerate_in": 10.0,
+                "write_path": "/tmp/today/",
+                "cameras": [
+                    {
+                        "camera_name": "center_camera",
+                        "device_user_id": "192.168.5.102",
+                        "param_set": "UserSet2"
+                    }
+                ],
+                "slave": false,
+                "number": 1
+            }
+        }
+    }
+}

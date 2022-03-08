@@ -1,0 +1,146 @@
+{
+    "lidar_right_VLP16db": {
+        "sensor_name": "right_lidar",
+        "target_sensor_name": "right_lidar",
+        "device_type": "lidar",
+        "param_type": "hardware",
+        "param": {
+            "type": "Lidar",
+            "property": {
+                "lidar_type": "VLP16db",
+                "distance_resolution_m": 0.002,
+                "num_lasers": 16,
+                "laser_corrections": [
+                    {
+                        "key": 0,
+                        "value": {
+                            "laser_ring": 0,
+                            "rot_correction": 0.0,
+                            "vert_correction": -0.2617993877991494
+                        }
+                    },
+                    {
+                        "key": 1,
+                        "value": {
+                            "laser_ring": 1,
+                            "rot_correction": 0.0,
+                            "vert_correction": 0.017453292519943295
+                        }
+                    },
+                    {
+                        "key": 2,
+                        "value": {
+                            "laser_ring": 2,
+                            "rot_correction": 0.0,
+                            "vert_correction": -0.22689280275926285
+                        }
+                    },
+                    {
+                        "key": 3,
+                        "value": {
+                            "laser_ring": 3,
+                            "rot_correction": 0.0,
+                            "vert_correction": 0.05235987755982989
+                        }
+                    },
+                    {
+                        "key": 4,
+                        "value": {
+                            "laser_ring": 4,
+                            "rot_correction": 0.0,
+                            "vert_correction": -0.19198621771937624
+                        }
+                    },
+                    {
+                        "key": 5,
+                        "value": {
+                            "laser_ring": 5,
+                            "rot_correction": 0.0,
+                            "vert_correction": 0.08726646259971647
+                        }
+                    },
+                    {
+                        "key": 6,
+                        "value": {
+                            "laser_ring": 6,
+                            "rot_correction": 0.0,
+                            "vert_correction": -0.15707963267948966
+                        }
+                    },
+                    {
+                        "key": 7,
+                        "value": {
+                            "laser_ring": 7,
+                            "rot_correction": 0.0,
+                            "vert_correction": 0.12217304763960307
+                        }
+                    },
+                    {
+                        "key": 8,
+                        "value": {
+                            "laser_ring": 8,
+                            "rot_correction": 0.0,
+                            "vert_correction": -0.12217304763960307
+                        }
+                    },
+                    {
+                        "key": 9,
+                        "value": {
+                            "laser_ring": 9,
+                            "rot_correction": 0.0,
+                            "vert_correction": 0.15707963267948966
+                        }
+                    },
+                    {
+                        "key": 10,
+                        "value": {
+                            "laser_ring": 10,
+                            "rot_correction": 0.0,
+                            "vert_correction": -0.08726646259971647
+                        }
+                    },
+                    {
+                        "key": 11,
+                        "value": {
+                            "laser_ring": 11,
+                            "rot_correction": 0.0,
+                            "vert_correction": 0.19198621771937624
+                        }
+                    },
+                    {
+                        "key": 12,
+                        "value": {
+                            "laser_ring": 12,
+                            "rot_correction": 0.0,
+                            "vert_correction": -0.05235987755982989
+                        }
+                    },
+                    {
+                        "key": 13,
+                        "value": {
+                            "laser_ring": 13,
+                            "rot_correction": 0.0,
+                            "vert_correction": 0.22689280275926285
+                        }
+                    },
+                    {
+                        "key": 14,
+                        "value": {
+                            "laser_ring": 14,
+                            "rot_correction": 0.0,
+                            "vert_correction": -0.017453292519943295
+                        }
+                    },
+                    {
+                        "key": 15,
+                        "value": {
+                            "laser_ring": 15,
+                            "rot_correction": 0.0,
+                            "vert_correction": 0.2617993877991494
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}

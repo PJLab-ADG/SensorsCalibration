@@ -1,0 +1,43 @@
+{
+    "gnss-to-car_center-extrinsic": {
+        "param_type": "extrinsic",
+        "sensor_name": "gnss",
+        "target_sensor_name": "car_center",
+        "device_type": "relational",
+        "param": {
+            "sensor_calib": {
+                "data": [
+                    [
+                        0.0028837265,
+                        0.9999958421,
+                        0.0,
+                        -1.77
+                    ],
+                    [
+                        -0.9999958421,
+                        0.0028837265,
+                        0.0,
+                        0
+                    ],
+                    [
+                        0.0,
+                        0.0,
+                        1.0,
+                        0
+                    ],
+                    [
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                ],
+                "continuous": true,
+                "rows": 4,
+                "type": 6,
+                "cols": 4
+            },
+            "time_lag": 0
+        }
+    }
+}

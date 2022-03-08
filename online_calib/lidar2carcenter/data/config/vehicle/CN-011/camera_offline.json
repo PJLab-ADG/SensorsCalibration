@@ -1,0 +1,18 @@
+{
+    "camera_offline": {
+        "specification": [
+            {
+                "key": "AB",
+                "value": {
+                    "name": "camera_front_virtualx4",
+                    "ids": [
+                        0,
+                        1,
+                        2,
+                        3
+                    ]
+                }
+            }
+        ]
+    }
+}

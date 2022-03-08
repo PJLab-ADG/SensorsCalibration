@@ -1,0 +1,43 @@
+{
+    "can-to-car_center-extrinsic": {
+        "sensor_name": "can",
+        "target_sensor_name": "car_center",
+        "device_type": "relational",
+        "param_type": "extrinsic",
+        "param": {
+            "time_lag": 0,
+            "sensor_calib": {
+                "rows": 4,
+                "cols": 4,
+                "type": 6,
+                "continuous": true,
+                "data": [
+                    [
+                        1.0,
+                        0,
+                        0,
+                        -1.425
+                    ],
+                    [
+                        0,
+                        1.0,
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0,
+                        1.0,
+                        0
+                    ],
+                    [
+                        0,
+                        0,
+                        0,
+                        1.0
+                    ]
+                ]
+            }
+        }
+    }
+}

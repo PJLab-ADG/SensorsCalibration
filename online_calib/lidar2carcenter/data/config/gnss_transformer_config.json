@@ -1,0 +1,12 @@
+{
+    "value0": {
+        "wgs84_source": "+proj=latlong +ellps=WGS84",
+        "utm_target": "+proj=utm +zone=51 +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs",
+        "yaw_offset": 0.0,
+        "map_offset": {
+            "value0": 0.0,
+            "value1": 0.0,
+            "value2": 0.0
+        }
+    }
+}

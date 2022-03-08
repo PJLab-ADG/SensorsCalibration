@@ -1,0 +1,11 @@
+{
+    "dual_ant-intrinsic": {
+        "param_type": "intrinsic",
+        "sensor_name": "dual_ant",
+        "target_sensor_name": "dual_ant",
+        "device_type": "dual_ant",
+        "param": {
+            "heading_offset": 0.0
+        }
+    }
+}

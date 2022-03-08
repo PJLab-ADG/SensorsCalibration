@@ -1,0 +1,24 @@
+{
+    "left_lidar-intrinsic": {
+        "sensor_name": "left_lidar",
+        "target_sensor_name": "left_lidar",
+        "device_type": "lidar",
+        "param_type": "intrinsic",
+        "param": {
+            "lidar_type": "VLP16db",
+            "is_open": false,
+            "lidar_ids": "lidar_left",
+            "is_fusion": false,
+            "use_undist": true,
+            "max_range_m": 130.0,
+            "min_range_m": 0.8,
+            "view_width_rad": 3.1,
+            "view_direction_rad": -0.05,
+            "target_frame": "left_lidar",
+            "ip_addr": "192.168.9.43",
+            "port": 4000,
+            "buffer_size": 400,
+            "max_output_count": 3
+        }
+    }
+}

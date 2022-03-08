@@ -1,0 +1,56 @@
+{
+    "sensor_connection_list": [
+        {
+            "first": "top_center_lidar",
+            "second": "left_lidar"
+        },
+        {
+            "first": "top_center_lidar",
+            "second": "right_lidar"
+        },
+        {
+            "first": "top_center_lidar",
+            "second": "car_center"
+        },
+        {
+            "first": "top_center_lidar",
+            "second": "front_left_camera"
+        },
+        {
+            "first": "top_center_lidar",
+            "second": "center_camera"
+        },
+        {
+            "first": "top_center_lidar",
+            "second": "front_right_camera"
+        },
+        {
+            "first": "top_center_lidar",
+            "second": "front_radar"
+        },
+        {
+            "first": "top_center_lidar",
+            "second": "rear_radar"
+        },
+        {
+            "first": "car_center",
+            "second": "can"
+        },
+        {
+            "first": "gnss",
+            "second": "car_center"
+        },
+        {
+            "first": "car_center",
+            "second": "ground_projection"
+        },
+        {
+            "first": "left_antenna",
+            "second": "gnss"
+        },
+        {
+            "first": "right_antenna",
+            "second": "gnss"
+        }
+    ]
+}

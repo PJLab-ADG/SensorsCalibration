@@ -1,0 +1,43 @@
+{
+    "car_center-to-ground_projection-extrinsic": {
+        "param_type": "extrinsic",
+        "sensor_name": "car_center",
+        "target_sensor_name": "ground_projection",
+        "device_type": "relational",
+        "param": {
+            "time_lag": 0,
+            "sensor_calib": {
+                "rows": 4,
+                "cols": 4,
+                "type": 6,
+                "continuous": true,
+                "data": [
+                    [
+                        1.0,
+                        0,
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        1.0,
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0,
+                        1.0,
+                        0.73
+                    ],
+                    [
+                        0,
+                        0,
+                        0,
+                        1.0
+                    ]
+                ]
+            }
+        }
+    }
+}

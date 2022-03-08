@@ -1,0 +1,16 @@
+{
+    "light_stopline_distance_max_thres": 30.0,
+    "light_whether_crop": true,
+    "light_crop_width_rate": 0.75,
+    "light_crop_height_rate": 0.5,
+    "light_cluster_map_distance_thres": 2.0,
+    "light_height_rate_thres": 0.6,
+    "light_cluster_pixel_distance_thres": 500,
+    "light_whether_use_light_type": false,
+    "light_cache_length": 3,
+    "light_detector_cache_length": 3,
+    "trafficlight_status_size": 4,
+    "light_boundary_distance_thres": 50.0,
+    "light_stopline_distance_min_thres": -5.0,
+    "tl_match_debug": false
+}

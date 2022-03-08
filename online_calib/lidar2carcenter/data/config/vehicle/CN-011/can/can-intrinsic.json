@@ -1,0 +1,14 @@
+{
+    "can-intrinsic": {
+        "param_type": "intrinsic",
+        "sensor_name": "can",
+        "target_sensor_name": "can",
+        "device_type": "can",
+        "param": {
+            "can_yaw_rate_scale": 1.08704,
+            "can_yaw_rate_offset": 9.3e-05,
+            "can_velocity_scale": 0.95411,
+            "can_velocity_offset": 0.0
+        }
+    }
+}

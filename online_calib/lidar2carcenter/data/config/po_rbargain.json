@@ -1,0 +1,207 @@
+{
+    "value0": {
+        "pedestrian_config": {
+            "ModelConfig": {
+                "turn_on": false,
+                "model_path": "./god_models/detection/M_Detection_PVB_3.5.3_av.tar"
+            },
+            "landmark": {
+                "ModelConfig": {
+                    "turn_on": false,
+                    "model_path": "./ap_models/ped/pedestrian_keypoint_MIXINT8_14_1.1.1.tar"
+                },
+                "landmark_type": 2
+            },
+            "body_face_direct": {
+                "ModelConfig": {
+                    "turn_on": false,
+                    "model_path": "./ap_models/ped/pedestrian_direction_2in1_MIXINT8_1.0.2.tar"
+                }
+            },
+            "track": {
+                "reid": {
+                    "turn_on": false,
+                    "model_path": ""
+                },
+                "track_mode": 2
+            },
+            "filter": false
+        },
+        "vehicle_config": {
+            "ModelConfig": {
+                "turn_on": false,
+                "model_path": "./god_models/detection/M_Detection_PVB_3.5.3_av.tar"
+            },
+            "landmark": {
+                "ModelConfig": {
+                    "turn_on": false,
+                    "model_path": "./ap_models/vehicle/vehicle_keypoint_MIXINT8_26_1.1.0.tar"
+                },
+                "landmark_type": 3
+            },
+            "virtual_3d_box": {
+                "turn_on": false
+            },
+            "direction": {
+                "ModelConfig": {
+                    "turn_on": false,
+                    "model_path": "./ap_models/vehicle/vehicle_direction_reg_MIXINT8_1.0.4.tar"
+                }
+            },
+            "track": {
+                "reid": {
+                    "turn_on": false,
+                    "model_path": ""
+                },
+                "track_mode": 1
+            },
+            "lamp_status": {
+                "ModelConfig": {
+                    "turn_on": false,
+                    "model_path": ""
+                },
+                "direction_threshold": 0.75,
+                "up_light_threshold": 0.65,
+                "back_light_threshold": 0.5,
+                "front_light_threshold": 0.6
+            },
+            "filter": false
+        },
+        "non_vehicle_config": {
+            "ModelConfig": {
+                "turn_on": false,
+                "model_path": "./god_models/detection/M_Detection_PVB_3.5.3_av.tar"
+            },
+            "landmark": {
+                "ModelConfig": {
+                    "turn_on": false,
+                    "model_path": "./god_models/landmark/M_Landmark_NonVehicle_3.1.1.tar"
+                },
+                "landmark_type": 0
+            },
+            "virtual_3d_box": {
+                "turn_on": false
+            },
+            "track": {
+                "reid": {
+                    "turn_on": false,
+                    "model_path": ""
+                },
+                "track_mode": 1
+            },
+            "filter": false 
+        },
+        "trafficlight_config": {
+            "ModelConfig": {
+                "turn_on": false,
+                "model_path": "./god_models/traffic/M_Detection_Trafficlight_3.0.1.tar"
+            }
+        },
+        "trafficsign_config": {
+            "ModelConfig": {
+                "turn_on": false,
+                "model_path": "./god_models/traffic/M_Detection_Trafficsign_2.0.0.model"
+            }
+        },
+        "carlight_config": {
+            "ModelConfig": {
+                "turn_on": false,
+                "model_path": ""
+            }
+        },
+        "cartype_config": {
+            "ModelConfig": {
+                "turn_on": false,
+                "model_path": ""
+            }
+        },
+        "animal_config": {
+            "ModelConfig": {
+                "turn_on": false,
+                "model_path": "./god_models/detection/M_Detection_Animal_2.0.1.tar"
+            }
+        },
+        "train_config": {
+            "ModelConfig": {
+                "turn_on": false,
+                "model_path": ""
+            }
+        },
+        "pole_config": {
+            "ModelConfig": {
+                "turn_on": false,
+                "model_path": "./god_models/detection/M_Detection_Telepole_1.0.1.tar"
+            }
+        },
+        "gate_config": {
+            "ModelConfig": {
+                "turn_on": false,
+                "model_path": ""
+            }
+        },
+        "sign_light_mark_config": {
+            "ModelConfig": {
+                "turn_on": false,
+                "model_path": "./god_models/detection/M_Detection_SLR_C6_1.0.2.tar"
+            },
+            "classify": {
+                "turn_on": false,
+                "model_path": "./god_models/detection/M_Classification_SLR_C61_1.0.0.tar"
+            }
+        },
+        "cone_config": {
+            "ModelConfig": {
+                "turn_on": true,
+                "model_path": "./god_models/detection/M_Detection_Cone_1.0.2.tar"
+            }
+        },
+        "warning_triangle_config": {
+            "ModelConfig": {
+                "turn_on": false,
+                "model_path": "./god_models/detection/M_Detection_WarningTriangle_1.0.1.tar"
+            }
+        },
+        "warning_flare_config": {
+            "ModelConfig": {
+                "turn_on": false,
+                "model_path": "./god_models/detection/M_Detection_WarningFlare_1.0.1.tar"
+            }
+        },
+        "disparity_config": {
+            "ModelConfig": {
+                "turn_on": false,
+                "model_path": "./god_models/obstacle/M_Obstacle_Disparity_JP_1.0.0.tar"
+            },
+            "is_show": false
+        },
+        "obstacle_config": {
+            "ModelConfig": {
+                "turn_on": false,
+                "model_path": "./god_models/obstacle/po_stixel_hangzhou.json"
+            }
+        },
+        "named_obstacle_config": {
+            "ModelConfig": {
+                "turn_on": false,
+                "model_path": "./god_models/detection/M_Detection_NamedObastacle_C9_1.0.1.tar"
+            }
+        },
+        "batch_num": 1,
+        "image_order_list": [0],
+        "image_exe_config": {
+            "transforms": [
+                {
+                    "crop_size": {
+                        "x": 0,
+                        "y": 0,
+                        "width": -1,
+                        "height": -1
+                    },
+                    "im_height": -1.0,
+                    "pad_border": 0.0
+                }
+            ],
+            "concat_mode": 1
+        }
+    }
+}

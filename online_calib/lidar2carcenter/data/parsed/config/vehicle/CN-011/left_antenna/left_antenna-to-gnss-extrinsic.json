@@ -1,0 +1,43 @@
+{
+    "left_antenna-to-gnss-extrinsic": {
+        "param_type": "extrinsic",
+        "sensor_name": "left_antenna",
+        "target_sensor_name": "gnss",
+        "device_type": "relational",
+        "param": {
+            "sensor_calib": {
+                "data": [
+                    [
+                        1,
+                        0,
+                        0,
+                        -0.48
+                    ],
+                    [
+                        0,
+                        1,
+                        0,
+                        0.97
+                    ],
+                    [
+                        0,
+                        0,
+                        1,
+                        0.95
+                    ],
+                    [
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                ],
+                "continuous": true,
+                "rows": 4,
+                "type": 6,
+                "cols": 4
+            },
+            "time_lag": 0
+        }
+    }
+}

@@ -1,0 +1,14 @@
+{
+    "gnss-intrinsic": {
+        "sensor_name": "gnss",
+        "target_sensor_name": "gnss",
+        "device_type": "gnss",
+        "param_type": "intrinsic",
+        "param": {
+            "roll": 0,
+            "pitch": 0,
+            "yaw": 0,
+            "heading": -0.0274
+        }
+    }
+}

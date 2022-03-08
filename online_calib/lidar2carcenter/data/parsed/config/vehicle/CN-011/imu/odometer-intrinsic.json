@@ -1,0 +1,11 @@
+{
+    "odometer-intrinsic": {
+        "param_type": "intrinsic",
+        "sensor_name": "odometer",
+        "target_sensor_name": "odometer",
+        "device_type": "odometer",
+        "param": {
+            "speed_scale": 0.955305
+        }
+    }
+}

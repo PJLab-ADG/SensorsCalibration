@@ -1,0 +1,7 @@
+{
+    "hdmap_param": {
+        "query_radius": 300,
+        "scale_factor": 0.25,
+        "query_hdmap_hz": 1
+    }
+}

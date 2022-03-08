@@ -1,0 +1,28 @@
+{
+    "top_center_lidar-intrinsic": {
+        "sensor_name": "top_center_lidar",
+        "target_sensor_name": "top_center_lidar",
+        "device_type": "lidar",
+        "param_type": "intrinsic",
+        "param": {
+            "lidar_type": "Pandar64",
+            "is_open": true,
+            "lidar_ids": "lidar_top_center",
+            "is_fusion": true,
+            "use_undist": true,
+            "max_range_m": 130.0,
+            "min_range_m": 0.5,
+            "view_width_rad": 7,
+            "view_direction_rad": 0,
+            "target_frame": "top_center_lidar",
+            "ip_addr": "192.168.3.43",
+            "port": 5000,
+            "buffer_size": 100,
+            "max_output_count": 3,
+            "additional_param": {
+                "is_gps_time": true,
+                "time_zone": 8
+            }
+        }
+    }
+}
