@@ -1,8 +1,3 @@
-/*
- * Copyright (C) 2021 by Autonomous Driving Group, Shanghai AI Laboratory
- * Limited. All rights reserved.
- * Yan Guohang <yanguohang@pjlab.org.cn>
- */
 #ifndef TRANSFORM_UTIL_HPP_
 #define TRANSFORM_UTIL_HPP_
 

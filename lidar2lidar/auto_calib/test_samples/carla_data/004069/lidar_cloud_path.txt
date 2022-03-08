@@ -1,0 +1,10 @@
+device_id: 0
+path: test_samples/carla_data/004069/top-004069.pcd
+device_id: 1
+path: test_samples/carla_data/004069/front-004069.pcd
+device_id: 2
+path: test_samples/carla_data/004069/back-004069.pcd
+device_id: 3
+path: test_samples/carla_data/004069/left-004069.pcd
+device_id: 4
+path: test_samples/carla_data/004069/right-004069.pcd

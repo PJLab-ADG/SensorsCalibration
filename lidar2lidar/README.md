@@ -94,24 +94,48 @@ According to the figure below for data collection, the calibration vehicle recor
 
 ## Usage
 
-1. Five Input files: 
+## Usage
 
-   `Usage: ./run_lidar2lidar <target_pcd_path> <source_pcd_path> <extrinsic_json>`
+1. Three input files: 
 
-- **target_pcd_path:** PCD file from the Lidar sensor
-- **source_pcd_path:** PCD file from the Lidar sensor
-- **extrinsic_json:** JSON file of initial values of extrinsic parameters between sensors
+   `point_cloud_path initial_extrinsic output_dir`
+
+- **point_cloud_path**: paths of Lidar point clouds
+- **initial_extrinsic**: initial extrinsic parameters
+- **output_dir**: output path
+
 
 2. Run the test sample:
 
    The executable file is under the bin folder.
 
    ```
-   cd ~./auto_calib/
-   ./bin/run_lidar2lidar test_data/hesai/scene1/lidar_cloud_path.txt test_data/hesai/scene1/initial_extrinsic.txt outputs
+   cd ./lidar2lidar/auto_calib/
+   ./bin/run_lidar2lidar  ./test_samples/real_world/2022-02-15-17-31-37-050/lidar_cloud_path.txt   ./test_samples/real_world/2022-02-15-17-31-37-050/initial_extrinsic.txt  outputs/2022-02-15-17-31-37-050
+   ./bin/run_lidar2lidar  ./test_samples/real_world/2022-02-15-17-36-04-449/lidar_cloud_path.txt   ./test_samples/real_world/2022-02-15-17-36-04-449/initial_extrinsic.txt  outputs/2022-02-15-17-36-04-449
+   ./bin/run_lidar2lidar  ./test_samples/real_world/2022-02-15-17-45-07-750/lidar_cloud_path.txt   ./test_samples/real_world/2022-02-15-17-45-07-750/initial_extrinsic.txt  outputs/2022-02-15-17-45-07-750
+   ./bin/run_lidar2lidar  ./test_samples/carla_data/004069/lidar_cloud_path.txt   ./test_samples/carla_data/004069/initial_extrinsic.txt  outputs/004069
+   ./bin/run_lidar2lidar  ./test_samples/carla_data/004553/lidar_cloud_path.txt   ./test_samples/carla_data/004553/initial_extrinsic.txt  outputs/004553
+   ./bin/run_lidar2lidar  ./test_samples/carla_data/005466/lidar_cloud_path.txt   ./test_samples/carla_data/005466/initial_extrinsic.txt  outputs/005466
    ```
 
 3. Calibration result:
 
-    <img src="./images/result1.png" width="100%" height="100%" alt="lidar2camera_panel" div align=center /><br><br>
-    <img src="./images/result2.png" width="100%" height="100%" alt="lidar2camera_panel" div align=center /><br>
+   <img src="./images/real_world_31.png" width="30%" height="30%" alt="Real World Calibration result1" div align=center />
+   <img src="./images/real_world_36.png" width="30%" height="30%" alt="Real World Calibration result2" div align=center />
+   <img src="./images/real_world_45.png" width="30%" height="30%" alt="Real World Calibration result3" div align=center />
+   <img src="./images/unreal_world_4069.png" width="30%" height="30%" alt="Real World Calibration result1" div align=center />
+   <img src="./images/unreal_world_4553.png" width="30%" height="30%" alt="Real World Calibration result2" div align=center />
+   <img src="./images/unreal_world_5466.png" width="30%" height="30%" alt="Real World Calibration result3" div align=center />
+
+## Citation
+This code is based on the research below:
+```
+@misc{2203.03182,
+Author = {Pengjin Wei and Guohang Yan and Yikang Li and Kun Fang and Wei Liu and Xinyu Cai and Jie Yang},
+Title = {CROON: Automatic Multi-LiDAR Calibration and Refinement Method in Road Scene},
+Year = {2022},
+Eprint = {arXiv:2203.03182},
+}
+   
+```

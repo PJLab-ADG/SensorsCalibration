@@ -1,0 +1,10 @@
+device_id: 0
+path: unreal_world/unreal_world/004553/top-004553.pcd
+device_id: 1
+path: unreal_world/unreal_world/004553/front-004553.pcd
+device_id: 2
+path: unreal_world/unreal_world/004553/back-004553.pcd
+device_id: 3
+path: unreal_world/unreal_world/004553/left-004553.pcd
+device_id: 4
+path: unreal_world/unreal_world/004553/right-004553.pcd
