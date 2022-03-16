@@ -1,8 +1,0 @@
-{
-    "host_config": {
-        "network_property": {
-            "control_connection_ip_addr": "tcp://10.9.77.33:6666",
-            "data_connection_ip_addr": "tcp://10.9.77.33:6667"
-        }
-    }
-}
