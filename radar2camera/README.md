@@ -10,15 +10,6 @@ This is a project for Radar to camera calibration， currently only including ma
 - PCL 1.9
 - Pangolin
 
-## Environment(Quick Start)
-
-```shell
-# pull docker image
-sudo docker pull scllovewkf/opencalib:latest
-# After the image is pulled down, start the docker image.  /home/sz3/ailab/ =  code root path on your host
-docker run -it -v /home/sz3/ailab/:/share scllovewkf/opencalib:latest /bin/bash
-```
-
 ## Compile
 Compile in their respective folders
 
