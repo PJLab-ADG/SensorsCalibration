@@ -6,6 +6,15 @@ SensorsCalibration is a simple calibration toolbox and open source project, main
 
 Sensor calibration is the foundation block of any autonomous system and its constituent sensors and must be performed correctly before sensor fusion may be implemented. Precise calibrations are vital for further processing steps, such as sensor fusion and implementation of algorithms for obstacle detection, localization and mapping, and control. Further, sensor fusion is one of the essential tasks in autonomous driving applications that fuses information obtained from multiple sensors to reduce the uncertainties compared to when sensors are used individually. To solve the problem of sensor calibration for autonomous vehicles, we provide a sensors calibration toolbox. The calibration toolbox can be used to calibrate sensors such as **IMU, LiDAR, Camera, and Radar**.
 
+## Environment(Quick Start)
+
+```shell
+# pull docker image
+sudo docker pull scllovewkf/opencalib:latest
+# After the image is pulled down, start the docker image.  /home/sz3/ailab/ =  code root path on your host
+docker run -it -v /home/sz3/ailab/:/share scllovewkf/opencalib:latest /bin/bash
+``` 
+
 ### Sensors calibration
 This calibration toolbox provides some calibration tools based on road scenes. The specific contents are as follows. If you want to use one of the calibration tools in the list below, you can click the use link to enter the instruction page. 
 
