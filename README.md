@@ -1,3 +1,5 @@
+<img src="./icon.png" width="100%" height="100%" alt="Calibration result" div align=center />
+
 # SensorsCalibration toolbox v0.1
 
 SensorsCalibration is a simple calibration toolbox and open source project, mainly used for sensor calibration in autonomous driving.
