@@ -1,0 +1,6 @@
+device_id: 0
+path: data/0001/top.pcd
+device_id: 1
+path: data/0001/left.pcd
+device_id: 2
+path: data/0001/right.pcd

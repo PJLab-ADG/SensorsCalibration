@@ -1,0 +1,43 @@
+{
+    "front_center_camera_car_center_calib": {
+        "device_type": "relational",
+        "param": {
+            "sensor_calib": {
+                "cols": 4,
+                "continuous": "true",
+                "data": [
+                    [
+                        1,
+                        0,
+                        0,
+                        0.338
+                    ],
+                    [
+                        0,
+                        1,
+                        0,
+                        0.0
+                    ],
+                    [
+                        0,
+                        0,
+                        0,
+                        0.99
+                    ],
+                    [
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                ],
+                "rows": 4,
+                "type": 6
+            },
+            "time_lag": 0
+        },
+        "param_type": "extrinsic",
+        "sensor_name": "front_center_camera",
+        "target_sensor_name": "car_center"
+    }
+}

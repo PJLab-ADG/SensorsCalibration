@@ -1,7 +1,6 @@
 #pragma once
 
 #include "logging.hpp"
-#include "transform_util.hpp"
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/Dense>
 #include <eigen3/Eigen/Geometry>
@@ -23,7 +22,7 @@ public:
                       const pcl::PointCloud<pcl::PointXYZI>::Ptr &cloud);
 
   bool RegistrationByICP(const Eigen::Matrix4d &init_guess,
-                         double *refined_yaw);
+                         Eigen::Matrix4d &transform);
   bool RegistrationByICP2(const Eigen::Matrix4d &init_guess,
                           Eigen::Matrix4d &refined_extrinsic);
   Eigen::Matrix4d GetFinalTransformation();
@@ -33,9 +32,8 @@ public:
   void computeNormals(const pcl::PointCloud<pcl::PointXYZI>::Ptr in_pts,
                       pcl::PointCloud<pcl::PointXYZINormal>::Ptr out_pts);
   bool RegistrationByVoxelOccupancy(const Eigen::Matrix4d &init_guess,
-                          Eigen::Matrix4d &refined_extrinsic);
-  size_t
-  ComputeVoxelOccupancy(const Eigen::Matrix4d &init_guess);
+                                    Eigen::Matrix4d &refined_extrinsic);
+  size_t ComputeVoxelOccupancy(const Eigen::Matrix4d &init_guess);
 
 private:
   pcl::PointCloud<pcl::PointXYZI>::Ptr tgt_gcloud_;

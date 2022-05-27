@@ -35,13 +35,22 @@ Eigen::Matrix4d ICPRegistrator::GetFinalTransformation() {
   return final_transformation_;
 }
 
+Eigen::Matrix4d GetDeltaT(const float yaw) {
+  Eigen::Matrix3d deltaR = Eigen::Matrix3d(
+      Eigen::AngleAxisd(yaw * M_PI / 180.0, Eigen::Vector3d::UnitZ()) *
+      Eigen::AngleAxisd(0, Eigen::Vector3d::UnitY()) *
+      Eigen::AngleAxisd(0, Eigen::Vector3d::UnitX()));
+
+  Eigen::Matrix4d deltaT = Eigen::Matrix4d::Identity();
+  deltaT.block<3, 3>(0, 0) = deltaR;
+  return deltaT;
+}
+
 bool ICPRegistrator::RegistrationByICP(const Eigen::Matrix4d &init_guess,
-                                       double *refined_yaw) {
+                                       Eigen::Matrix4d &transform) {
   pcl::KdTreeFLANN<pcl::PointXYZI> kdtree;
   kdtree.setInputCloud(tgt_ngcloud_);
-
-  double cur_yaw = TransformUtil::GetYaw(init_guess);
-
+  double cur_yaw = 0;
   double min_error = CalculateICPError(kdtree, init_guess, cur_yaw);
   double best_yaw = cur_yaw;
   float degree_2_radian = 0.017453293;
@@ -55,7 +64,6 @@ bool ICPRegistrator::RegistrationByICP(const Eigen::Matrix4d &init_guess,
       if (error < min_error) {
         min_error = error;
         best_yaw = yaw;
-        // std::cout << "distance decrease to: " << min_error << std::endl;
       }
     }
     search_range = static_cast<int>(search_range / 2 + 0.5);
@@ -63,30 +71,16 @@ bool ICPRegistrator::RegistrationByICP(const Eigen::Matrix4d &init_guess,
     cur_yaw = best_yaw;
     iter_cnt++;
   }
-
-  // for (int delta = -50; delta < 50; delta++) {
-  //   double yaw = cur_yaw + delta * degree_2_radian;
-  //   double error = CalculateICPError(kdtree, init_guess, yaw);
-  //   if (error < min_error) {
-  //     min_error = error;
-  //     best_yaw = yaw;
-  //     std::cout << "distance decrease to: " << min_error << std::endl;
-  //   }
-  // }
-  *refined_yaw = best_yaw;
+  Eigen::Matrix4d T = GetDeltaT(best_yaw);
+  T = T * init_guess;
+  transform = T;
   return true;
 }
 
 double ICPRegistrator::CalculateICPError(
     const pcl::KdTreeFLANN<pcl::PointXYZI> &kdtree,
     const Eigen::Matrix4d &init_guess, float cur_yaw) {
-  // transform to tranformation
-  double init_roll = TransformUtil::GetRoll(init_guess);
-  double init_pitch = TransformUtil::GetPitch(init_guess);
-
-  Eigen::Matrix4d T = TransformUtil::GetMatrix(
-      TransformUtil::GetTranslation(init_guess),
-      TransformUtil::GetRotation(init_roll, init_pitch, cur_yaw));
+  Eigen::Matrix4d T = GetDeltaT(cur_yaw) * init_guess;
   pcl::PointCloud<pcl::PointXYZI> trans_cloud;
 
   pcl::transformPointCloud(*src_ngcloud_, trans_cloud, T);
@@ -133,8 +127,7 @@ bool ICPRegistrator::RegistrationByICP2(const Eigen::Matrix4d &init_guess,
   pcl::PointCloud<pcl::PointXYZINormal> cloud_out;
   icp.align(cloud_out);
   Eigen::Matrix4f transform = icp.getFinalTransformation();
-  refined_extrinsic =
-      TransformUtil::Matrix4FloatToDouble(transform) * init_guess;
+  refined_extrinsic = transform.cast<double>() * init_guess;
   return true;
 }
 
@@ -156,94 +149,4 @@ void ICPRegistrator::computeNormals(
     (*out_pts)[i].y = (*in_pts)[i].y;
     (*out_pts)[i].z = (*in_pts)[i].z;
   }
-}
-
-// Fine tune in translation
-bool ICPRegistrator::RegistrationByVoxelOccupancy(
-    const Eigen::Matrix4d &init_guess, Eigen::Matrix4d &refined_extrinsic) {
-  double init_roll = TransformUtil::GetRoll(init_guess);
-  double init_pitch = TransformUtil::GetPitch(init_guess);
-  double init_yaw = TransformUtil::GetYaw(init_guess);
-  double init_x = TransformUtil::GetX(init_guess);
-  double init_y = TransformUtil::GetY(init_guess);
-  double init_z = TransformUtil::GetZ(init_guess);
-
-  double delta_tx = 0;
-  double delta_ty = 0;
-  double best_tx = 0;
-  double best_ty = 0;
-  int max_iter = 10;
-  double resolution = 0.02;
-  int direction[2] = {1, -1};
-
-  double min_voxel_occupancy = ComputeVoxelOccupancy(init_guess);
-  float var[6] = {0}, bestVal[6] = {0};
-  std::string varName[6] = {"roll", "pitch", "yaw", "tx", "ty", "tz"};
-  // tx
-  for (int j = 0; j <= 1; j++) {
-    for (int iter = 1; iter < max_iter; iter++) {
-
-      var[3] = iter * direction[j] * resolution;
-
-      Eigen::Matrix4d T = TransformUtil::GetDeltaT(var) * init_guess;
-      // delta_tx = iter * direction[j] * resolution + init_x;
-      // Eigen::Matrix4d T = TransformUtil::GetMatrix(delta_tx, init_y, init_z,
-      // init_roll, init_pitch, init_yaw);
-
-      size_t cnt = ComputeVoxelOccupancy(T);
-      if (cnt < min_voxel_occupancy * (1 - 1e-4)) {
-        min_voxel_occupancy = cnt;
-        // best_tx = delta_tx;
-        bestVal[3] = var[3];
-        std::cout << "Voxel Occupancy decrease to: " << cnt << std::endl;
-      } else {
-        std::cout << "Voxel Occupancy increase to: " << cnt << std::endl;
-        break;
-      }
-    }
-  }
-  var[3] = bestVal[3];
-  // ty
-  for (int j = 0; j <= 1; j++) {
-    for (int iter = 1; iter < max_iter; iter++) {
-
-      var[4] = iter * direction[j] * resolution;
-      Eigen::Matrix4d T = TransformUtil::GetDeltaT(var) * init_guess;
-      // delta_ty = iter * direction[j] * resolution + init_y;
-      // Eigen::Matrix4d T = TransformUtil::GetMatrix(best_tx, delta_ty, init_z,
-      // init_roll, init_pitch, init_yaw);
-      size_t cnt = ComputeVoxelOccupancy(T);
-      if (cnt < min_voxel_occupancy * (1 - 1e-4)) {
-        min_voxel_occupancy = cnt;
-        // best_tx = delta_tx;
-        bestVal[4] = var[4];
-        std::cout << "Voxel Occupancy decrease to: " << cnt << std::endl;
-      } else {
-        std::cout << "Voxel Occupancy increase to: " << cnt << std::endl;
-        break;
-      }
-    }
-  }
-
-  refined_extrinsic = TransformUtil::GetDeltaT(bestVal) * init_guess;
-}
-
-size_t
-ICPRegistrator::ComputeVoxelOccupancy(const Eigen::Matrix4d &init_guess) {
-  pcl::PointCloud<pcl::PointXYZI> trans_cloud;
-  pcl::transformPointCloud(*src_ngcloud_, trans_cloud, init_guess);
-  for (const auto src_pt : tgt_ngcloud_->points) {
-    if (!all_octree_->isVoxelOccupiedAtPoint(src_pt)) {
-      all_octree_->addPointToCloud(src_pt, all_cloud_);
-    }
-  }
-  for (const auto src_pt : trans_cloud.points) {
-    if (!all_octree_->isVoxelOccupiedAtPoint(src_pt)) {
-      all_octree_->addPointToCloud(src_pt, all_cloud_);
-    }
-  }
-  size_t cnt = all_cloud_->size();
-  all_cloud_->clear();
-  all_octree_->deleteTree();
-  return cnt;
 }

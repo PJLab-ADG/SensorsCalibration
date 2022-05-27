@@ -96,37 +96,20 @@ According to the figure below for data collection, the calibration vehicle recor
 
 ## Usage
 
-1. Three input files: 
+1. Two input files: 
 
-   `point_cloud_path initial_extrinsic output_dir`
+   `point_cloud_path initial_extrinsic`
 
 - **point_cloud_path**: paths of Lidar point clouds
 - **initial_extrinsic**: initial extrinsic parameters
-- **output_dir**: output path
-
 
 2. Run the test sample:
 
    The executable file is under the bin folder.
 
    ```
-   cd ./lidar2lidar/auto_calib/
-   ./bin/run_lidar2lidar  ./test_samples/real_world/2022-02-15-17-31-37-050/lidar_cloud_path.txt   ./test_samples/real_world/2022-02-15-17-31-37-050/initial_extrinsic.txt  outputs/2022-02-15-17-31-37-050
-   ./bin/run_lidar2lidar  ./test_samples/real_world/2022-02-15-17-36-04-449/lidar_cloud_path.txt   ./test_samples/real_world/2022-02-15-17-36-04-449/initial_extrinsic.txt  outputs/2022-02-15-17-36-04-449
-   ./bin/run_lidar2lidar  ./test_samples/real_world/2022-02-15-17-45-07-750/lidar_cloud_path.txt   ./test_samples/real_world/2022-02-15-17-45-07-750/initial_extrinsic.txt  outputs/2022-02-15-17-45-07-750
-   ./bin/run_lidar2lidar  ./test_samples/carla_data/004069/lidar_cloud_path.txt   ./test_samples/carla_data/004069/initial_extrinsic.txt  outputs/004069
-   ./bin/run_lidar2lidar  ./test_samples/carla_data/004553/lidar_cloud_path.txt   ./test_samples/carla_data/004553/initial_extrinsic.txt  outputs/004553
-   ./bin/run_lidar2lidar  ./test_samples/carla_data/005466/lidar_cloud_path.txt   ./test_samples/carla_data/005466/initial_extrinsic.txt  outputs/005466
+   ./bin/run_lidar2lidar data/0001/lidar_cloud_path.txt data/0001/initial_extrinsic.txt
    ```
-
-3. Calibration result:
-
-   <img src="./images/real_world_31.png" width="30%" height="30%" alt="Real World Calibration result1" div align=center />
-   <img src="./images/real_world_36.png" width="30%" height="30%" alt="Real World Calibration result2" div align=center />
-   <img src="./images/real_world_45.png" width="30%" height="30%" alt="Real World Calibration result3" div align=center />
-   <img src="./images/unreal_world_4069.png" width="30%" height="30%" alt="Real World Calibration result1" div align=center />
-   <img src="./images/unreal_world_4553.png" width="30%" height="30%" alt="Real World Calibration result2" div align=center />
-   <img src="./images/unreal_world_5466.png" width="30%" height="30%" alt="Real World Calibration result3" div align=center />
 
 ## Citation
 This code is based on the research below:

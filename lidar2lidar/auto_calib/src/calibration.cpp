@@ -33,19 +33,26 @@ void Calibrator::LoadCalibrationData(
   for (auto src : extrinsics) {
     int32_t device_id = src.first;
     InitialExtrinsic extrinsic = src.second;
-
-    Eigen::Matrix3d rot = TransformUtil::GetRotation(extrinsic.euler_angles[0],
-                                                     extrinsic.euler_angles[1],
-                                                     extrinsic.euler_angles[2]);
-    Eigen::Matrix4d init_ext =
-        TransformUtil::GetMatrix(extrinsic.t_matrix, rot);
+    Eigen::Matrix3d rotation;
+    Eigen::AngleAxisd Rx(
+        Eigen::AngleAxisd(extrinsic.euler_angles[0], Eigen::Vector3d::UnitX()));
+    Eigen::AngleAxisd Ry(
+        Eigen::AngleAxisd(extrinsic.euler_angles[1], Eigen::Vector3d::UnitY()));
+    Eigen::AngleAxisd Rz(
+        Eigen::AngleAxisd(extrinsic.euler_angles[2], Eigen::Vector3d::UnitZ()));
+    rotation = Rz * Ry * Rx;
+    Eigen::Matrix3d rot = rotation;
+    Eigen::Matrix4d init_ext = Eigen::Matrix4d::Identity();
+    init_ext.block<3, 1>(0, 3) = extrinsic.t_matrix;
+    init_ext.block<3, 3>(0, 0) = rot;
     init_extrinsics_.insert(std::make_pair(device_id, init_ext));
   }
 }
 
 void Calibrator::Calibrate() {
-  float degree_2_radian = 0.017453293;
-  LOGI("calibrate");
+  Eigen::Matrix4d transform = Eigen::Matrix4d::Identity();
+  Eigen::Matrix4d curr_transform = Eigen::Matrix4d::Identity();
+
   int32_t master_id = 0;
   auto master_iter = pcs_.find(master_id);
   pcl::PointCloud<pcl::PointXYZI> master_pc = master_iter->second;
@@ -58,7 +65,7 @@ void Calibrator::Calibrate() {
   bool ret = GroundPlaneExtraction(master_pc_ptr, master_gcloud, master_ngcloud,
                                    master_gplane);
   if (!ret) {
-    LOGE("master lidar ground fitting failed.\n");
+    LOGE("ground plane extraction failed.\n");
     return;
   }
   registrator_->SetTargetCloud(master_gcloud, master_ngcloud, master_pc_ptr);
@@ -67,22 +74,15 @@ void Calibrator::Calibrate() {
 
   for (auto iter = pcs_.begin(); iter != pcs_.end(); iter++) {
     int32_t slave_id = iter->first;
-    LOGI("slave %d begin", slave_id);
     if (slave_id == master_id)
       continue;
-    LOGI("start calibrating slave lidar, id: %d\n", slave_id);
     pcl::PointCloud<pcl::PointXYZI> slave_pc = iter->second;
+    pcl::PointCloud<pcl::PointXYZI> slave_original_pc = slave_pc;
     if (init_extrinsics_.find(slave_id) == init_extrinsics_.end()) {
-      LOGE("cannot find the init extrinsic, slave id: %d\n", slave_id);
+      LOGE("cannot find the init extrinsic, id: %d\n", slave_id);
       return;
     }
     Eigen::Matrix4d init_ext = init_extrinsics_[slave_id];
-    LOGI("init extrinsic T_ms is: roll = %f, pitch = %f, yaw =  %f, x = %f, "
-         "y = %f, z = %f\n",
-         TransformUtil::GetRoll(init_ext) / degree_2_radian,
-         TransformUtil::GetPitch(init_ext) / degree_2_radian,
-         TransformUtil::GetYaw(init_ext) / degree_2_radian, init_ext(0, 3),
-         init_ext(1, 3), init_ext(2, 3));
     pcl::PointCloud<pcl::PointXYZI>::Ptr slave_pc_ptr = slave_pc.makeShared();
     pcl::PointCloud<pcl::PointXYZI>::Ptr cloud_after_Condition(
         new pcl::PointCloud<pcl::PointXYZI>);
@@ -165,10 +165,22 @@ void Calibrator::Calibrate() {
     ret = GroundPlaneExtraction(slave_pc_ptr, slave_gcloud, slave_ngcloud,
                                 slave_gplane);
     if (!ret) {
-      LOGE("slave %d lidar ground fitting failed.\n", slave_id);
+      LOGE("ground plane extraction failed.\n");
       continue;
     }
-    registrator_->SetSourceCloud(slave_gcloud, slave_ngcloud, slave_pc_ptr);
+
+    pcl::PointCloud<pcl::PointXYZI>::Ptr slave_original_pc_ptr =
+        slave_original_pc.makeShared();
+    PlaneParam slave_original_gplane;
+    pcl::PointCloud<pcl::PointXYZI>::Ptr slave_original_ngcloud(
+        new pcl::PointCloud<pcl::PointXYZI>);
+    pcl::PointCloud<pcl::PointXYZI>::Ptr slave_original_gcloud(
+        new pcl::PointCloud<pcl::PointXYZI>);
+
+    ret = GroundPlaneExtraction(slave_original_pc_ptr, slave_original_gcloud,
+                                slave_original_ngcloud, slave_original_gplane);
+    registrator_->SetSourceCloud(slave_original_gcloud, slave_original_ngcloud,
+                                 slave_original_pc_ptr);
 
     // ground normal direction
     Eigen::Vector3f ground_point(
@@ -188,7 +200,6 @@ void Calibrator::Calibrate() {
         Undertheground++;
       }
     }
-
     // ground plane align
     Eigen::Vector3d rot_axis2 = slave_gplane.normal.cross(master_gplane.normal);
     rot_axis2.normalize();
@@ -199,10 +210,13 @@ void Calibrator::Calibrate() {
         0, 0, -slave_gplane.intercept / slave_gplane.normal(2));
     Eigen::Vector3d slave_intcpt_master = R_ms * slave_intcpt_local;
     Eigen::Vector3d t_ms(0, 0, t_mp(2) - slave_intcpt_master(2));
-    Eigen::Matrix4d T_ms = TransformUtil::GetMatrix(t_ms, R_ms);
+
+    Eigen::Matrix4d T_ms = Eigen::Matrix4d::Identity();
+    T_ms.block<3, 1>(0, 3) = t_ms;
+    T_ms.block<3, 3>(0, 0) = R_ms;
+
     double z_error = std::fabs(t_ms(2) - init_ext(2, 3));
     if (z_error > 0.5) {
-      // maybe the direction is diffetent
       slave_gplane.normal = -slave_gplane.normal;
       slave_gplane.intercept = -slave_gplane.intercept;
       rot_axis2 = slave_gplane.normal.cross(master_gplane.normal);
@@ -213,39 +227,13 @@ void Calibrator::Calibrate() {
           0, 0, -slave_gplane.intercept / slave_gplane.normal(2));
       slave_intcpt_master = R_ms * slave_intcpt_local;
       t_ms = Eigen::Vector3d(0, 0, t_mp(2) - slave_intcpt_master(2));
-      T_ms = TransformUtil::GetMatrix(t_ms, R_ms);
-      z_error = std::fabs(t_ms(2) - init_ext(2, 3));
-      if (z_error > 0.5) {
-        LOGE(
-            "slave %d ground fitting failed, error: z-diff error is too big.\n",
-            slave_id);
-        continue;
-      }
+      T_ms.block<3, 1>(0, 3) = t_ms;
+      T_ms.block<3, 3>(0, 0) = R_ms;
     }
-
-    double roll = TransformUtil::GetRoll(T_ms);
-    double pitch = TransformUtil::GetPitch(T_ms);
-    double z = TransformUtil::GetZ(T_ms);
-    double init_x = TransformUtil::GetX(init_ext);
-    double init_y = TransformUtil::GetY(init_ext);
-    double init_yaw = TransformUtil::GetYaw(init_ext);
-    Eigen::Matrix4d init_guess =
-        TransformUtil::GetMatrix(init_x, init_y, z, roll, pitch, init_yaw);
-    LOGI("ground plane param align, roll = %f, pitch = %f, z = %f\n", roll,
-         pitch, z);
-    // registration
-    double refined_yaw = 0;
-    registrator_->RegistrationByICP(init_guess, &refined_yaw);
-    double init_roll = TransformUtil::GetRoll(init_guess);
-    double init_pitch = TransformUtil::GetPitch(init_guess);
-    Eigen::Matrix4d yaw_opt_resust = TransformUtil::GetMatrix(
-        TransformUtil::GetTranslation(init_guess),
-        TransformUtil::GetRotation(init_roll, init_pitch, refined_yaw));
+    curr_transform = init_ext * T_ms;
+    registrator_->RegistrationByICP(curr_transform, transform);
     Eigen::Matrix4d final_opt_result;
-    registrator_->RegistrationByICP2(yaw_opt_resust, final_opt_result);
-    Eigen::Matrix4d temp = final_opt_result;
-    registrator_->RegistrationByVoxelOccupancy(temp, final_opt_result);
-
+    registrator_->RegistrationByICP2(transform, final_opt_result);
     refined_extrinsics_.insert(std::make_pair(slave_id, final_opt_result));
   }
 }

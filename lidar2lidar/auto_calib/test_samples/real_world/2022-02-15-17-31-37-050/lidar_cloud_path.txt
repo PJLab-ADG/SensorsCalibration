@@ -1,6 +1,0 @@
-device_id: 0
-path: test_samples/real_world/2022-02-15-17-31-37-050/top-2022-02-15-17-31-37-050.pcd
-device_id: 1
-path: test_samples/real_world/2022-02-15-17-31-37-050/left-2022-02-15-17-31-37-040.pcd
-device_id: 2
-path: test_samples/real_world/2022-02-15-17-31-37-050/right-2022-02-15-17-31-37-077.pcd

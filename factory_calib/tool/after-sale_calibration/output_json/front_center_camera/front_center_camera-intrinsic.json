@@ -1,0 +1,49 @@
+{
+    "front_center_camera_calib": {
+        "device_type": "camera",
+        "param": {
+            "cam_K": {
+                "cols": 3,
+                "continuous": "true",
+                "data": [
+                    [
+                        1000.0,
+                        0,
+                        958.0
+                    ],
+                    [
+                        0,
+                        1000.0,
+                        548.0
+                    ],
+                    [
+                        0,
+                        0,
+                        1
+                    ]
+                ],
+                "rows": 3,
+                "type": 6
+            },
+            "cam_dist": {
+                "cols": 4,
+                "continuous": "true",
+                "data": [
+                    [
+                        0,
+                        0,
+                        0,
+                        0
+                    ]
+                ],
+                "rows": 1,
+                "type": 6
+            },
+            "img_dist_h": 1080,
+            "img_dist_w": 1920
+        },
+        "param_type": "intrinsic",
+        "sensor_name": "front_center_camera",
+        "target_sensor_name": "front_center_camera"
+    }
+}

@@ -1,9 +1,3 @@
-/*
- * Copyright (C) 2021 by Autonomous Driving Group, Shanghai AI Laboratory
- * Limited. All rights reserved.
- * Yan Guohang <yanguohang@pjlab.org.cn>
- */
-
 #include <chrono> // NOLINT
 #include <iostream>
 #include <pcl/common/transforms.h>
@@ -47,9 +41,6 @@ void LoadPointCloud(
       std::cout << "[ERROR] cannot open pcd_file: " << point_cloud_path << "\n";
       exit(1);
     }
-
-    // std::vector<senselidar::calibration::PointXYZI> point =
-    //     GetPointFromPclPointCloud(cloud);
     lidar_points.insert(std::make_pair(device_id, *cloud));
   }
 }
@@ -82,18 +73,16 @@ void LoadCalibFile(const std::string &filename,
 }
 
 int main(int argc, char *argv[]) {
-  if (argc != 4) {
-    std::cout
-        << "Usage: ./run_lidar2lidar <lidar_file> <calib_file> <output_dir>"
-           "\nexample:\n\t"
-           "./bin/run_lidar2lidar test_data/hesai/scene1/lidar_cloud_path.txt "
-           "test_data/hesai/scene1/initial_extrinsic.txt outputs"
-        << std::endl;
+  if (argc != 3) {
+    std::cout << "Usage: ./run_lidar2lidar <lidar_file> <calib_file>"
+                 "\nexample:\n\t"
+                 "./bin/run_lidar2lidar data/0001/lidar_cloud_path.txt "
+                 "data/0001/initial_extrinsic.txt"
+              << std::endl;
     return 0;
   }
   auto lidar_file = argv[1];
   auto calib_file = argv[2];
-  auto output_dir = argv[3];
   std::map<int32_t, pcl::PointCloud<pcl::PointXYZI>> lidar_points;
   LoadPointCloud(lidar_file, lidar_points);
   std::map<int32_t, InitialExtrinsic> extrinsics;
@@ -131,15 +120,6 @@ int main(int argc, char *argv[]) {
        iter++) {
     int32_t slave_id = iter->first;
     Eigen::Matrix4d transform = iter->second;
-    float degree_2_radian = 0.017453293;
-    // LOGI("slave_id %d extrinsic T_ms is: roll = %f, pitch = %f, yaw =  %f, x
-    // = "
-    //      "%f, "
-    //      "y = %f, z = %f\n",
-    //      slave_id, TransformUtil::GetRoll(transform) / degree_2_radian,
-    //      TransformUtil::GetPitch(transform) / degree_2_radian,
-    //      TransformUtil::GetYaw(transform) / degree_2_radian, transform(0, 3),
-    //      transform(1, 3), transform(2, 3));
 
     auto slave_iter = lidar_points.find(slave_id);
     pcl::PointCloud<pcl::PointXYZI> slave_pc = slave_iter->second;

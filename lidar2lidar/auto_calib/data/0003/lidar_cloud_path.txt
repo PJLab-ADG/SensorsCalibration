@@ -1,0 +1,6 @@
+device_id: 0
+path: data/0003/top-2022-02-15-17-45-07-750.pcd
+device_id: 1
+path: data/0003/left-2022-02-15-17-45-07-777.pcd
+device_id: 2
+path: data/0003/right-2022-02-15-17-45-07-757.pcd

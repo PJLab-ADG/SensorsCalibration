@@ -14,20 +14,18 @@
 #include <vector>
 
 #include "logging.hpp"
-#include "plane_ground_filter_core.h"
 #include "registration_icp.hpp"
-#include "transform_util.hpp"
 
 struct InitialExtrinsic {
   Eigen::Vector3d euler_angles;
   Eigen::Vector3d t_matrix;
 };
-// struct PlaneParam {
-//   PlaneParam() {}
-//   PlaneParam(const Eigen::Vector3d &n, double i) : normal(n), intercept(i) {}
-//   Eigen::Vector3d normal;
-//   double intercept;
-// };
+struct PlaneParam {
+  PlaneParam() {}
+  PlaneParam(const Eigen::Vector3d &n, double i) : normal(n), intercept(i) {}
+  Eigen::Vector3d normal;
+  double intercept;
+};
 
 class Calibrator {
 public:
