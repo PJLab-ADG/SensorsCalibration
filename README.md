@@ -1,4 +1,4 @@
-<img src="./icon.png" width="100%" height="100%" alt="Calibration result" div align=center />
+<img src="./icon.png" width="100%" height="100%" alt="" div align=center />
 
 # SensorsCalibration toolbox v0.1
 
