@@ -46,7 +46,7 @@ At the same time, the calibration toolbox also provides some factory calibration
 
 ## Related paper 
 Related paper available on arxiv:  
-[OpenCalib: A calibration toolbox for different application scenarios](http://arxiv.org)
+[OpenCalib: A multi-sensor calibration toolbox for autonomous driving](https://arxiv.org/abs/2205.14087)
 
 <!-- CONTRIBUTING -->
 ## Contributing
