@@ -62,6 +62,18 @@ Don't forget to give the project a star! Thanks again!
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
+<!-- CITATION -->
+## Citation
+If you find this project useful in your research, please consider cite:
+```
+@article{opencalib,
+    title={OpenCalib: A Multi-sensor Calibration Toolbox for Autonomous Driving},
+    author={Yan, Guohang and Liu, Zhuochun and Wang, Chengjie and Shi, Chunlei and Wei, Pengjin and Cai, Xinyu and Ma, Tao and Liu, Zhizheng and Zhong, Zebin and Liu, Yuqian and Zhao, Ming and Ma, Zheng and Li, Yikang},
+    journal={arXiv preprint arXiv:2205.14087},
+    year={2022},
+}
+```
+
 
 <!-- LICENSE -->
 ## License
