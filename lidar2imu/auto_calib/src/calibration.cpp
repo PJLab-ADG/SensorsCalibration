@@ -79,7 +79,7 @@ void Calibrator::Calibration(const std::string lidar_path,
                              const Eigen::Matrix4d init_Tl2i) {
   lidar_path_ = lidar_path;
   auto time_begin = std::chrono::steady_clock::now();
-  int turn = 35;
+  int turn = 20;
   int window = 10;
   //   Eigen::Matrix4d init_Tl2i = Eigen::Matrix4d::Identity();
   Eigen::Matrix<double, 6, 1> last_deltaT;
@@ -198,9 +198,9 @@ void Calibrator::Calibration(const std::string lidar_path,
   // save refined calib
   std::string refine_calib_file = "./refined_calib_imu_to_lidar.txt";
   Eigen::Matrix4d deltaTrans = Eigen::Matrix4d::Identity();
-  SaveStitching(deltaTrans,"before.pcd");
+  // SaveStitching(deltaTrans,"before.pcd");
   deltaTrans = GetDeltaTrans(deltaRPY, deltaT);
-  SaveStitching(deltaTrans,"after.pcd");
+  // SaveStitching(deltaTrans,"after.pcd");
   std::cout << "delta T is:" << std::endl;
   std::cout << deltaTrans << std::endl;
   auto refined_Tl2i = init_Tl2i * deltaTrans;

@@ -40,7 +40,7 @@ public:
                      const std::string pcd_name);
 
 private:
-  int turn_ = 35;
+  int turn_ = 20;
   int window_ = 10;
   std::vector<std::string> lidar_files_;
   std::vector<Eigen::Matrix4d> lidar_poses_;

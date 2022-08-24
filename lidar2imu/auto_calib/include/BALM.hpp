@@ -293,6 +293,17 @@ public:
 
       calc_eigen(); // calculate eigenvalue ratio
 
+      Eigen::Vector3d gp_normal(0, 0, 1);
+      Eigen::Vector3d ap_normal(ap_centor_direct.normal_x,
+                                ap_centor_direct.normal_y,
+                                ap_centor_direct.normal_z);
+      double angle = std::acos(gp_normal.dot(ap_normal));
+      double degree_2_radian = 0.017453293;
+      double angel_degree = angle / degree_2_radian;
+      if (angel_degree < 160 && angel_degree > 20) {
+        return;
+      }
+
       // if (isnan(feat_eigen_ratio)) {
       //     feat_eigen_ratio = -1;
       //     return;
