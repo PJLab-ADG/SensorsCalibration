@@ -68,11 +68,10 @@ void CameraCalibrator::get_result(cv::Mat &camera_matrix, cv::Mat &k,
 
   Eigen::Matrix3d camera_intrinsic;
   camera_intrinsic << camera_matrix.at<double>(0, 0),
-      camera_matrix.at<double>(1, 0), camera_matrix.at<double>(2, 0),
-      camera_matrix.at<double>(0, 1), camera_matrix.at<double>(1, 1),
-      camera_matrix.at<double>(2, 1), camera_matrix.at<double>(0, 2),
-      camera_matrix.at<double>(1, 2), camera_matrix.at<double>(2, 2);
-
+      camera_matrix.at<double>(0, 1), camera_matrix.at<double>(0, 2),
+      camera_matrix.at<double>(1, 0), camera_matrix.at<double>(1, 1),
+      camera_matrix.at<double>(1, 2), camera_matrix.at<double>(2, 0),
+      camera_matrix.at<double>(2, 1), camera_matrix.at<double>(2, 2);
   Eigen::VectorXd distort(2);
   distort << k.at<double>(0, 0), k.at<double>(0, 1);
 
