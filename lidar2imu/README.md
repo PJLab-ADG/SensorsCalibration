@@ -1,6 +1,6 @@
 ## Introduction
 
-This is a project for LiDAR to pose-sensor calibration， including automatic calibration and manual calibration.
+This is a project for LiDAR to <strong>pose-sensor</strong> calibration， including automatic calibration and manual calibration.
 
 ## Prerequisites
 
