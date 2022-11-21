@@ -326,7 +326,11 @@ int ProcessLidarFrame(const std::vector<pcl::PointCloud<pcl::PointXYZI>> &pcds,
       dst_pt.z = p_res(2);
       dst_pt.intensity = src_pt.intensity;
 
-      if (!all_octree->isVoxelOccupiedAtPoint(dst_pt)) {
+      double min_x, min_y, min_z, max_x, max_y, max_z;
+      all_octree->getBoundingBox(min_x, min_y, min_z, max_x, max_y, max_z);
+      bool isInBox = (dst_pt.x >= min_x && dst_pt.x <= max_x) && (dst_pt.y >= min_y && dst_pt.y <= max_y) && (dst_pt.z >= min_z && dst_pt.z <= max_z);
+      if (!isInBox || !all_octree->isVoxelOccupiedAtPoint(dst_pt))
+      {
         all_octree->addPointToCloud(dst_pt, cloudLidar);
       }
     }
