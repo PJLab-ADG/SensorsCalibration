@@ -1,0 +1,2 @@
+# SensorX2car
+SensorX2car is a calibration toolbox for the online calibration of sensor-to-car coordinate systems in road scenes, which contains four commonly used sensors (pose_sensor (IMU + GNSS), LiDAR (Light Detection and Ranging), Camera, and millimeter-wave Radar) for autonomous driving. Code is available at <a href="https://github.com/OpenCalib/SensorX2car" title="https://github.com/OpenCalib/SensorX2car">https://github.com/OpenCalib/SensorX2car</a>.
