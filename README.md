@@ -45,7 +45,7 @@ At the same time, the calibration toolbox also provides some factory calibration
  
 
 ### SensorX2car
-SensorX2car is a calibration toolbox for the online calibration of sensor-to-car coordinate systems in road scenes, which contains four commonly used sensors (pose_sensor (IMU + GNSS), LiDAR (Light Detection and Ranging), Camera, and millimeter-wave Radar) for autonomous driving. 
+SensorX2car is a calibration toolbox for the online calibration of sensor-to-car coordinate systems in road scenes for autonomous driving. 
 
 | calibration param |calibration type| calibration method | mannual calibration | auto calibration | usage documentation |
 | :--------------: |:--------------:| :------------: | :--------------: | :------------: | :------------: |
