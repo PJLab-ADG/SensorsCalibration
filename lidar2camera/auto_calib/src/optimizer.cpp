@@ -131,8 +131,8 @@ float Optimizer::MaskRegistrationLoss(
   Eigen::Matrix4d T = curr_optim_extrinsic_;
   T *= deltaT;
   for (const auto &src_pt : register_cloud->points) {
-    if (!pcl_isfinite(src_pt.x) || !pcl_isfinite(src_pt.y) ||
-        !pcl_isfinite(src_pt.z))
+    if (!std::isfinite(src_pt.x) || !std::isfinite(src_pt.y) ||
+        !std::isfinite(src_pt.z))
       continue;
     Eigen::Vector4d vec;
     vec << src_pt.x, src_pt.y, src_pt.z, 1;
@@ -192,8 +192,8 @@ void Optimizer::SaveProjectResult(
             << translation(2) << std::endl;
   cv::Mat image = distance_img->clone();
   for (const auto &src_pt : register_cloud->points) {
-    if (!pcl_isfinite(src_pt.x) || !pcl_isfinite(src_pt.y) ||
-        !pcl_isfinite(src_pt.z))
+    if (!std::isfinite(src_pt.x) || !std::isfinite(src_pt.y) ||
+        !std::isfinite(src_pt.z))
       continue;
     Eigen::Vector4d vec;
     vec << src_pt.x, src_pt.y, src_pt.z, 1;

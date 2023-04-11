@@ -313,8 +313,8 @@ int ProcessLidarFrame(const std::vector<pcl::PointCloud<pcl::PointXYZI>> &pcds,
     T *= calibration_matrix_;
 
     for (const auto &src_pt : pcds[i].points) {
-      if (!pcl_isfinite(src_pt.x) || !pcl_isfinite(src_pt.y) ||
-          !pcl_isfinite(src_pt.z))
+      if (!std::isfinite(src_pt.x) || !std::isfinite(src_pt.y) ||
+          !std::isfinite(src_pt.z))
         continue;
       pcl::PointXYZI dst_pt;
       Eigen::Vector3d p(src_pt.x, src_pt.y, src_pt.z);
