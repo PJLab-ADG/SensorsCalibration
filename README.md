@@ -9,7 +9,24 @@ SensorsCalibration is a simple calibration toolbox and open source project, main
 Sensor calibration is the foundation block of any autonomous system and its constituent sensors and must be performed correctly before sensor fusion may be implemented. Precise calibrations are vital for further processing steps, such as sensor fusion and implementation of algorithms for obstacle detection, localization and mapping, and control. Further, sensor fusion is one of the essential tasks in autonomous driving applications that fuses information obtained from multiple sensors to reduce the uncertainties compared to when sensors are used individually. To solve the problem of sensor calibration for autonomous vehicles, we provide a sensors calibration toolbox. The calibration toolbox can be used to calibrate sensors such as **IMU, LiDAR, Camera, and Radar**.
 
 ## Environment(Quick Start)
+### Source installation
+- ubuntu22.04
+- Linux kernel == 5.19.0-40-generic
+- c++14
+- [gflags](https://github.com/gflags/gflags)
+- [jsoncpp](https://github.com/open-source-parsers/jsoncpp)
+- [Pangolin](https://github.com/stevenlovegrove/Pangolin/tree/v0.6) -- branch==v0.6
+- Cmake
+- opencv4
+- eigen 3
+- PCL >= 1.11
+```shell
+# example: SensorsCalibration_v2/lidar2camera/manual_calib
+cd SensorsCalibration_v2/lidar2camera/manual_calib
+./cmake_script/cmake_build.sh
+```
 
+### Docker installation
 ```shell
 # pull docker image
 sudo docker pull scllovewkf/opencalib:v1
