@@ -1,0 +1,29 @@
+CMakeLists.txt.user*
+bspline_test
+test*.datatable
+*.so
+*.a
+.idea/
+build/
+*.cbp
+*.save
+*.layout
+*.depends
+*.pyc
+
+# Saved approximants (and datatable)
+*.bspline
+*.rbf
+*.pspline
+*.poly
+*.datatable
+
+# Auxiliary, temporary and log files related to LaTeX
+docs/**/*.aux
+docs/**/*.log
+docs/**/*.out
+docs/**/*.toc
+docs/**/*.gz
+docs/**/*.bbl
+docs/**/*.blg
+docs/**/*.*~

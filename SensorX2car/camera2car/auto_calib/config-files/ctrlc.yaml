@@ -1,0 +1,61 @@
+MODELS:
+  BACKBONE: 'hourglass' # resnet50
+  POSITION_EMBEDDING: 'sine'
+  MASKS: False
+  USE_STRUCTURE_TENSOR: True
+  
+  TRANSFORMER:
+    ENC_LAYERS: 6
+    DEC_LAYERS: 6
+    DIM_FEEDFORWARD: 2048
+    HIDDEN_DIM: 256
+    DROPOUT: 0.1
+    NHEADS: 8
+    NUM_QUERIES: 2
+    PRE_NORM: False
+
+LOSS:
+  LOSSES: ['vp', 'hl', 'hline_labels']
+  AUX_LOSS: True
+  LINE_POS_ANGLE: 87.0
+  LINE_NEG_ANGLE: 85.0
+  
+  WEIGHTS:
+    loss_vp: 1.0
+    loss_hl: 1.0
+    loss_hline_ce: 0.5
+    
+DATASETS:
+  INPUT_WIDTH: 512
+  INPUT_HEIGHT: 512
+  MIN_LINE_LENGTH: 10
+  NUM_INPUT_LINES: 512
+  NUM_INPUT_VERT_LINE: 128
+  VERT_LINE_ANGLE: 22.5
+  AUGMENTATION: True
+  
+SOLVER:
+  LR: 0.0001
+  LR_BACKBONE: 0.0001
+  BATCH_SIZE: 24
+  WEIGHT_DECAY: 0.0001
+  EPOCHS: 40
+  LR_DROP: 20
+  CLIP_MAX_NORM: 0.1
+  
+TEST:
+  DISPLAY: False
+  
+CHECKPOINT_PERIOD: 1
+DATASET_DIR: "kitti_horizon_vp_straight/"
+OUTPUT_DIR: "logs/"
+DEVICE: 'cuda'
+SEED: 42
+RESUME: 
+LOAD: 'logs/checkpoint.pth'
+MODE : train
+START_EPOCH: 0
+VAL: False
+NUM_WORKERS: 12
+WORLD_SIZE: 1
+DIST_URL: 'tcp://127.0.0.1:23456'
