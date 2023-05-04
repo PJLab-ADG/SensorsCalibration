@@ -19,6 +19,3 @@ Year = {2023},
 Eprint = {arXiv:2301.07279},
 }
 ```
-
-## Contact
-If you have questions about this repo, please contact Yan Guohang (`yanguohang@pjlab.org.cn`). 
