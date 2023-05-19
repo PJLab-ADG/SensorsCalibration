@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(LidarToImu)
 set(CMAKE_CXX_FLAGS "-std=c++11 -g -Wall")
+set(CMAKE_CXX_STANDARD 14)
 ## Get Pangolin
 find_package(Pangolin 0.4 REQUIRED)
 include_directories(${Pangolin_INCLUDE_DIRS})
@@ -12,7 +13,7 @@ link_directories(${OpenCV_LIBRARY_DIRS})
 include_directories(${OpenCV_INCLUDE_DIRS})
 
 add_subdirectory(ceres)
-include_directories(${PROJECT_SOURCE_DIR}/eigen3)
+include_directories(SYSTEM ${PROJECT_SOURCE_DIR}/eigen3)
 include_directories(${PROJECT_SOURCE_DIR}/ceres/include)
 
 include_directories(${EIGEN_ROOT})

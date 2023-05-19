@@ -38,7 +38,7 @@ public:
   }
 
   void mouse_event(int event, int x, int y) {
-    if (event == CV_EVENT_LBUTTONDOWN) {
+    if (event == cv::EVENT_LBUTTONDOWN) {
       picked_points_.push_back(cv::Point2f(x, y));
       std::cout << "picked " << x << ", " << y << std::endl;
       cv::circle(image_, cv::Point(x, y), 6, cv::Scalar(0, 0, 255), -1);

@@ -253,8 +253,8 @@ void Calibrator::SaveStitching(const Eigen::Matrix4d transform,
     }
     Eigen::Matrix4d T = lidar_poses_[i] * transform;
     for (const auto &src_pt : cloud->points) {
-      if (!pcl_isfinite(src_pt.x) || !pcl_isfinite(src_pt.y) ||
-          !pcl_isfinite(src_pt.z))
+      if (!std::isfinite(src_pt.x) || !std::isfinite(src_pt.y) ||
+          !std::isfinite(src_pt.z))
         continue;
       Eigen::Vector3d p(src_pt.x, src_pt.y, src_pt.z);
       Eigen::Vector3d p_res;

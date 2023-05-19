@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.5)
 project(rec_parser C CXX)
 set(CMAKE_CXX_FLAGS "-std=c++11 -g -Wall")
+set(CMAKE_CXX_STANDARD 14)
+
 find_package(PCL REQUIRED)
 find_package(Boost REQUIRED system)
 

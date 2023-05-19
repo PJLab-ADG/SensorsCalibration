@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(LidarToLidar)
 set(CMAKE_CXX_FLAGS "-std=c++11 -g -Wall")
+set(CMAKE_CXX_STANDARD 14)
 
 find_package(Pangolin REQUIRED)
 include_directories(${Pangolin_INCLUDE_DIRS})

@@ -78,7 +78,7 @@ bool IntrinsicCalibration::Calibrate(const std::string &img_dir_path,
                 selected_file_names.push_back(file_names[i]);
                 cv::imwrite(selected_image_path_+file_names[i], 
                             cv::imread(img_dir_path_+file_names[i]));
-                cv::TermCriteria criteria(CV_TERMCRIT_EPS | CV_TERMCRIT_ITER, 
+                cv::TermCriteria criteria(cv::TermCriteria::EPS | cv::TermCriteria::EPS, 
                                         grid_size_, 0.001);
                 cv::cornerSubPix(input_image, image_corners, cv::Size(5, 5), 
                                 cv::Size(-1, -1), criteria);

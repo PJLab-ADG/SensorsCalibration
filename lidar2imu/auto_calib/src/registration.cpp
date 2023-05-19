@@ -126,8 +126,8 @@ void Registrator::SaveStitching(const std::string &stitching_path) {
     lidar_pose *= delta_pose;
 
     for (const auto &src_pt : pcds_[i].points) {
-      if (!pcl_isfinite(src_pt.x) || !pcl_isfinite(src_pt.y) ||
-          !pcl_isfinite(src_pt.z))
+      if (!std::isfinite(src_pt.x) || !std::isfinite(src_pt.y) ||
+          !std::isfinite(src_pt.z))
         continue;
       Eigen::Vector3d p(src_pt.x, src_pt.y, src_pt.z);
       Eigen::Vector3d p_res;
@@ -383,8 +383,8 @@ size_t Registrator::ComputeVoxelOccupancy(float var[6]) {
 
 #pragma omp parallel for
     for (const auto &src_pt : pcds_[i].points) {
-      if (!pcl_isfinite(src_pt.x) || !pcl_isfinite(src_pt.y) ||
-          !pcl_isfinite(src_pt.z))
+      if (!std::isfinite(src_pt.x) || !std::isfinite(src_pt.y) ||
+          !std::isfinite(src_pt.z))
         continue;
 
       Eigen::Vector3d p(src_pt.x, src_pt.y, src_pt.z);
