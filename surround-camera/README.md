@@ -1,5 +1,5 @@
 # surround-camera_calib
-surround-camera_calib is a calibration toolbox for surround view cameras or surround view fisheye cameras, which contains four tools, as shown in the table below. For more calibration codes, please refer to the link <a href="https://github.com/PJLab-ADG/SensorsCalibration" title="SensorsCalibration">SensorsCalibration</a>
+surround-camera_calib is a calibration toolbox for surround view cameras or surround view fisheye cameras, which contains four tools, as shown in the table below.
 <!-- CITATION -->
 
 | calibration param |calibration type| calibration method | mannual calibration | auto calibration | usage documentation |
