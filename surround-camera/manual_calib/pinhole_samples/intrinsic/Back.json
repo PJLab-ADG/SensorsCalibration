@@ -1,0 +1,40 @@
+{
+    "back_camera-intrinsic": {
+        "sensor_name": "back_camera",
+        "target_sensor_name": "back_camera",
+        "device_type": "camera",
+        "param_type": "intrinsic",
+        "param": {
+            "img_dist_w": 1500,
+            "img_dist_h": 1500,
+            "cam_K": {
+                "rows": 3,
+                "cols": 3,
+                "type": 6,
+                "continuous": true,
+                "data": [
+                    [
+                        390.425287,  0.00000000, 750
+                    ],
+                    [
+                      0.00000000, 390.425287,   750
+                    ],
+                    [
+                        0.00000000,   0.00000000,   1.00000000
+                    ]
+                ]
+            },
+            "cam_dist": {
+                "rows": 1,
+                "cols": 4,
+                "type": 6,
+                "continuous": true,
+                "data": [
+                    [
+                      0,0,0,0
+                    ]
+                ]
+            }
+        }
+    }
+}

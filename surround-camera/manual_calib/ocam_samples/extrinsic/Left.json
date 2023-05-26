@@ -1,0 +1,34 @@
+{
+    "bev-to-left_camera-extrinsic": {
+        "sensor_name": "left_camera",
+        "target_sensor_name": "car",
+        "device_type": "relational",
+        "param_type": "extrinsic",
+        "param": {
+            "time_lag": 0,
+            "sensor_calib": {
+                "rows": 4,
+                "cols": 4,
+                "type": 6,
+                "continuous": true,
+                "data": [
+                    [
+                        -0.0426184,-0.998965,0.0158866,-2.29191
+                    ],
+                    [
+                        0.59999,-0.0128762,0.799904,-2.87306
+                    ],
+                    [
+                        -0.798872,0.0436224,0.599918,-4.28015
+                    ],
+                    [
+                        0,
+                        0,
+                        0,
+                        1
+                    ]
+                ]
+            }
+        }
+    }
+}

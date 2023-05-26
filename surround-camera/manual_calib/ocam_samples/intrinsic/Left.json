@@ -1,0 +1,54 @@
+{
+    "left_camera-intrinsic": {
+        "sensor_name": "left_camera",
+        "target_sensor_name": "left_camera",
+        "device_type": "camera",
+        "param_type": "intrinsic",
+        "param": {
+            "img_dist_w": 1280,
+            "img_dist_h": 960,
+            "cam_K": {
+                "rows": 3,
+                "cols": 3,
+                "type": 6,
+                "continuous": true,
+                "data": [
+                    [
+                        0.9999710806,
+                        -6.82561295e-05,
+                        643.8368539
+                    ],
+                    [
+                       -6.042894326e-05,
+                        1,
+                        491.3267194
+                    ],
+                    [
+                        0.00000000,   0.00000000,   1.00000000
+                    ]
+                ]
+            },
+            "cam_dist": {
+                "rows": 1,
+                "cols": 11,
+                "type": 6,
+                "continuous": true,
+                "data": [
+                    [
+                       627.8211834,
+                        469.9053135,
+                        5.162670831,
+                        24.79828188,
+                        69.56651241,
+                        -25.68668682,
+                        -18.84845381,
+                        99.65393419,
+                        119.8569483,
+                        52.06757035,
+                        8.179703627
+                    ]
+                ]
+            }
+        }
+    }
+}
