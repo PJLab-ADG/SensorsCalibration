@@ -142,3 +142,5 @@ Eprint = {arXiv:2103.04558},
 }
    
 ```
+## Automatic calibration tool v2.0
+please refer to [README.md](auto_calib_v2.0/README.md) 
