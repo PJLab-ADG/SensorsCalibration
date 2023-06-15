@@ -14,6 +14,8 @@ Sensor calibration is the foundation block of any autonomous system and its cons
 sudo docker pull scllovewkf/opencalib:v1
 # After the image is pulled down, start the docker image.  /home/sz3/ailab/ =  code root path on your host
 docker run -it -v /home/sz3/ailab/:/share scllovewkf/opencalib:v1 /bin/bash
+# or
+sudo ./run_docker.sh
 ``` 
 
 ### Sensors calibration
