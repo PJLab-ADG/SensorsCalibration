@@ -37,7 +37,7 @@ static Eigen::Matrix4d orign_calibration_matrix_ = Eigen::Matrix4d::Identity();
 static Eigen::Matrix3d intrinsic_matrix_ = Eigen::Matrix3d::Identity();
 static Eigen::Matrix3d orign_intrinsic_matrix_ = Eigen::Matrix3d::Identity();
 std::vector<float> distortions_;
-std::vector<Eigen::Matrix4d> modification_list_;
+std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Vector4d>> modification_list_(12);
 bool display_mode_ = false;
 bool filter_mode_ = false;
 
@@ -58,7 +58,7 @@ void CalibrationInit(Eigen::Matrix4d json_param) {
   init_cali << 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1;
   calibration_matrix_ = json_param;
   orign_calibration_matrix_ = json_param;
-  modification_list_.reserve(12);
+  modification_list_.resize(12);
   for (int32_t i = 0; i < 12; i++) {
     std::vector<int> transform_flag(6, 0);
     transform_flag[i / 2] = (i % 2) ? (-1) : 1;
@@ -83,7 +83,6 @@ void CalibrationInit(Eigen::Matrix4d json_param) {
 void CalibrationScaleChange() {
   Eigen::Matrix4d init_cali;
   init_cali << 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1;
-  modification_list_.reserve(12);
   for (int32_t i = 0; i < 12; i++) {
     std::vector<int> transform_flag(6, 0);
     transform_flag[i / 2] = (i % 2) ? (-1) : 1;
@@ -244,8 +243,13 @@ int main(int argc, char **argv) {
 
   cout << "Loading data completed!" << endl;
   CalibrationInit(json_param);
+
+  std::cout << __LINE__ << "\n";
+
   Projector projector;
   projector.loadPointCloud(pcd);
+
+  std::cout << __LINE__ << "\n";
 
   // view
   int width = img.cols;
