@@ -94,4 +94,4 @@ If you find this project useful in your research, please consider cite:
 
 
 ## Contact
-If you have questions about this repo, please contact Yan Guohang (`yanguohang@pjlab.org.cn`). If you need business cooperation, please call 19821266250 (same number on WeChat).
+If you have questions about this repo, please contact Yan Guohang (`yanguohang@pjlab.org.cn`).
