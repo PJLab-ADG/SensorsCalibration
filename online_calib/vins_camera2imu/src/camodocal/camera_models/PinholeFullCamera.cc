@@ -596,8 +596,8 @@ PinholeFullCamera::liftProjective( const Eigen::Vector2d& p, Eigen::Vector3d& P 
             xd0     = x * cdist * icdist2 + p1 * a1 + p2 * a2;
             yd0     = y * cdist * icdist2 + p1 * a3 + p2 * a1;
 
-            double x_proj = xd * fx + cx;
-            double y_proj = yd * fy + cy;
+            double x_proj = xd0 * fx + cx;
+            double y_proj = yd0 * fy + cy;
 
             error = sqrt( pow( x_proj - u, 2 ) + pow( y_proj - v, 2 ) );
         }
