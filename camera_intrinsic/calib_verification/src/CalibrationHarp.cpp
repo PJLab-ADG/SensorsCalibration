@@ -6,6 +6,160 @@
 #include "CalibrationHarp.hpp"
 
 #define HAHAHA 5
+#define UNDIST 1
+
+struct Undistort
+{
+    static const int N = 20, NUM_INTRINSIC = 3;
+    std::vector<std::vector<cv::Point2d>> points, points_undistort;
+    double cx, cy;// center of distortion
+    double f;// focal length
+
+    int nk, iter;
+    double klist[N] = { 1, };// list of coefficients for distortion correction polynomial and cx, cy, f
+    double hessian[N][N], grad[N];
+    double lambda = 0;
+    double fxy[N][N], fx[N], fx_[N], fy[N], dk[N];
+
+    Undistort(std::vector<std::vector<cv::Point2d>> points_, double cx_, double cy_, double f, int nk_ = 6, int iter_ = 500)
+        :points(points_), points_undistort(points_), cx(cx_), cy(cy_), nk(nk_), iter(iter_)
+    {
+        klist[nk++] = cx, klist[nk++] = cy, klist[nk++] = f;
+        calcGrad();
+        calcHessian();
+        for (int i = 0; i < nk; ++i)
+        {
+            lambda += hessian[i][i];
+        }
+        lambda *= 0.001;
+    }
+
+    // Compute the least squares fitting error for minimum current undistorted result for each line.
+    double calcErr()
+    {
+        cx = klist[nk - NUM_INTRINSIC];
+        cy = klist[nk - NUM_INTRINSIC + 1];
+        f = klist[nk - NUM_INTRINSIC + 2];
+
+        double res = 0, r, rk, fr;
+        double a, b, c, sin, cos, sx, sy, alpha, beta;
+        double xd, yd;
+        int nl = points.size(), np;
+        for (int i = 0; i < nl; ++i)
+        {
+            auto& line = points[i];
+            auto& line_undistort = points_undistort[i];
+            np = line.size();
+            if (np <= 2) continue;
+
+            for (int i = 0; i < np; ++i)
+            {
+                xd = line[i].x, yd = line[i].y;
+                r = (xd - cx) * (xd - cx) + (yd - cy) * (yd - cy), r /= (f * f);
+                rk = r, fr = 1;
+                for (int j = 1; j < nk - NUM_INTRINSIC; ++j) fr += klist[j] * rk, rk *= r;
+                line_undistort[i].x = fr * (xd - cx) + cx;
+                line_undistort[i].y = fr * (yd - cy) + cy;
+            }
+
+            a = b = c = sx = sy = 0;
+            for (auto p : line_undistort)
+            {
+                a += p.x * p.x, b += p.x * p.y, c += p.y * p.y;
+                sx += p.x, sy += p.y;
+            }
+            a -= sx * sx / np, b -= sx * sy / np, c -= sy * sy / np;
+            alpha = a - c, beta = alpha / (2 * sqrt(alpha * alpha + 4 * b * b));
+            sin = sqrt(0.5 - beta);
+            cos = sqrt(0.5 + beta);
+            res += a * sin * sin - 2 * std::abs(b) * sin * cos + c * cos * cos;
+        }
+        return res;
+    }
+
+    void calcGrad()
+    {
+        double f0 = calcErr();
+        for (int i = 0; i < nk; ++i)
+        {
+            dk[i] = std::max(klist[i] * 1e-4, 1e-6);
+            klist[i] += dk[i], fx[i] = calcErr();
+            klist[i] -= 2 * dk[i], fx_[i] = calcErr();
+            klist[i] += dk[i];
+            grad[i] = (fx[i] - f0) / dk[i];
+        }
+        for (int i = 0; i < nk; ++i)
+        {
+            for (int j = 0; j < nk; ++j)
+            {
+                klist[i] += dk[i], klist[j] += dk[j];
+                fxy[i][j] = calcErr();
+                klist[i] -= dk[i], klist[j] -= dk[j];
+            }
+        }
+    }
+
+    void calcHessian()
+    {
+        double f0 = calcErr();
+        for (int i = 0; i < nk; ++i)
+        {
+            for (int j = 0; j < nk; ++j)
+            {
+                if (i > j) hessian[i][j] = hessian[j][i];
+                else if (i == j)
+                {
+                    hessian[i][i] = (fx[i] + fx_[i] - 2 * f0) / dk[i];
+                }
+                else
+                {
+                    hessian[i][j] = (fxy[i][j] + f0 - fx[i] - fx[j]) / (dk[i] * dk[j]);
+                }
+            }
+        }
+    }
+
+    void proc()
+    {
+        while (iter--)
+        {
+            double errPre = calcErr();
+            calcGrad();
+            calcHessian();
+            for (int i = 0; i < nk; ++i) hessian[i][i] += lambda;
+
+            cv::Mat A(nk, nk, CV_64FC1);
+            for (int i = 0; i < nk; ++i)
+            {
+                for (int j = 0; j < nk; ++j)
+                {
+                    A.at<double>(i, j) = hessian[i][j];
+                }
+            }
+            cv::invert(A, A);
+            cv::Mat b(nk, 1, CV_64FC1, grad);
+            cv::Mat x = -A * b;
+            for (int i = 0; i < nk; ++i)
+            {
+                klist[i] += x.at<double>(i);
+            }
+            if (calcErr() > errPre)
+            {
+                for (int i = 0; i < nk; ++i)
+                {
+                    klist[i] -= x.at<double>(i);
+                }
+                lambda *= 10;
+            }
+            else lambda = std::max(lambda / 10, 1e-16);
+
+#if 0
+            printf("cx:%f, cy:%f, error:%f, lambda:%f\n", cx, cy, errPre, lambda);
+#endif
+        }
+    }
+};
+
 
 CalibrationHarp::CalibrationHarp() { return; }
 
@@ -165,6 +319,44 @@ bool CalibrationHarp::interpolate_edge_points(
       interpolated_edge_points[i].push_back(Point2i(int(new_x), int(new_y)));
     }
   }
+
+#if UNDIST
+  {
+      std::vector<std::vector<cv::Point2d>> points;
+      std::vector<std::vector<Point2i>> points_undistort;
+      for (auto& v : subsampled_edge_points)
+      {
+          std::vector<cv::Point2d> t;
+          for (auto& p : v)
+          {
+              t.push_back(cv::Point2d(p.x, p.y));
+          }
+          points.push_back(t);
+      }
+      Undistort udt(points, image.cols / 2, image.rows / 2, image.cols / 2);
+      udt.proc();
+      for (auto& v : udt.points_undistort)
+      {
+          std::vector<Point2i> t;
+          for (auto& p : v)
+          {
+              t.push_back(Point2i(p.x, p.y));
+          }
+          points_undistort.push_back(t);
+      }
+
+      calculate_error(points_undistort, d, d_max, d_c_median);
+      std::cout << "after undistort:" << std::endl;
+      std::cout << "d: " << d << " pixels" << std::endl;
+      std::cout << "d_max: " << d_max << " pixels" << std::endl;
+
+      cv::Mat show = image.clone();
+      line_detector.drawSegments(show, points_undistort);
+      cv::resize(show, show, cv::Size(800, 600));
+      cv::imshow("undistort", show);
+      cv::waitKey();
+  }
+#endif
 
   return true;
 }
