@@ -7,7 +7,7 @@ find_package(Pangolin 0.6 REQUIRED)
 include_directories(${Pangolin_INCLUDE_DIRS})
 link_directories(${Pangolin_LIBRARY_DIRS})
 
-find_package(PCL 1.9 EXACT REQUIRED)
+find_package(PCL 1.9.1 EXACT REQUIRED)
 find_package(Boost REQUIRED system)
 find_package(OpenCV REQUIRED)
 find_package(jsoncpp REQUIRED)
